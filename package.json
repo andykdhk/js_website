@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "^4.4.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -19,6 +21,8 @@
     "moment": "^2.29.1",
     "mongoose": "^5.12.5",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
