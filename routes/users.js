@@ -98,14 +98,20 @@ router.post("/register", (req, res) => {
   }
 });
 
-//POST from login.hbs form
-//Login
+// POST from login.hbs form
+// Login
 router.post("/login", (req, res, next) => {
+  //console.log(req.body.email);
   passport.authenticate("local", {
-    successRedirect: "/dashboard",
+    // successRedirect: "/dashboard",
     failureRedirect: "/users/login",
     failureFlash: true,
   })(req, res, next);
+  //when success login
+  res.render("dashboard", {
+    layout: "login",
+    name: req.body.email,
+  });
 });
 
 //GET

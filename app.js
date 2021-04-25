@@ -7,19 +7,22 @@
 /* Load modules */
 const path = require("path");
 const express = require("express"); //go get a manual of express module
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const exphbs = require("express-handlebars");
 const connectDB = require("./config/db"); ///go get a manual of connectDB file
 const flash = require("connect-flash");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");
 
 /* Load config */
 dotenv.config({ path: "./config/config.env" });
 
 // Passport Config
-require("./config/passport")(passport);
+require("./config/passport")(passport); //local strategy
+require("./config/passportGoogle")(passport); //google strategy
 
 /* DB connection */
 connectDB(); //use this manual
@@ -54,6 +57,7 @@ app.use(
     secret: "secret",
     resave: true,
     saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
 
@@ -76,8 +80,9 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, "public")));
 
 /* Routes */
-app.use("/", require("./routes/index")); //lvl1
-app.use("/users", require("./routes/users")); //lvl2
+app.use("/", require("./routes/index")); //lv1
+app.use("/users", require("./routes/users")); //lv2
+app.use("/auth", require("./routes/auth")); //lv2\
 
 /* Variables */
 const PORT = process.env.PORT || 3000;

@@ -11,14 +11,14 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 //home page
 router.get("/", (req, res) => {
   res.render("home", {
-    //this url address("/") will open the login.hbs file
+    //this url address("/") will open the home.hbs file
     layout: "main",
   });
 }); /* routers */
 
 //GET
 //login page
-router.get("/login", forwardAuthenticated, (req, res) => {
+router.get("/login", (req, res) => {
   res.render("login", {
     layout: "login",
   });
@@ -26,9 +26,10 @@ router.get("/login", forwardAuthenticated, (req, res) => {
 
 //GET
 //dashboard page
-router.get("/dashboard", ensureAuthenticated, (req, res) => {
+router.get("/dashboard", (req, res) => {
   res.render("dashboard", {
     layout: "login",
+    // name: req.user.firstName,
   });
 });
 
