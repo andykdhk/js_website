@@ -16,29 +16,45 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/users/login" }),
-  async (req, res) => {
-    try {
-      const stories = await User.find({ user: req.user.firstName }).lean();
-      res.render("dashboard", {
-        layout: "login",
-        name: req.user.firstName,
-      });
-    } catch (err) {
-      console.error(err);
-      res.render("home");
-    }
+  (req, res) => {
+    res.render("dashboard", {
+      layout: "login",
+      name: req.user.lastName,
+    });
   }
 );
 
 //     // req.flash("success_msg", "google log in");
 //     // res.redirect("/dashboard"); //if successful
 
-//GET /auth/logout
+//GET.../auth/logout
 //Logout user
 router.get("/logout", (req, res) => {
   req.logout();
-  req.flash("success_msg", "google log out");
-  res.redirect("/");
+  req.session.destroy();
+  res.clearCookie("connect.sid");
+
+  res.redirect(
+    "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000/"
+  );
 });
 
 module.exports = router;
+
+// async (req, res) => {
+//   try {
+//     const stories = await User.find({ user: req.user.firstName }).lean();
+//     res.render("dashboard", {
+//       layout: "login",
+//       name: req.user.lastName,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.render("home");
+//   }
+// }
+// );
+// var auth2 = gapi.auth2.getAuthInstance();
+// auth2.signOut().then(function () {
+//   console.log("User signed out.");
+// });

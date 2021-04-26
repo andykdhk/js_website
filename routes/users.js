@@ -11,7 +11,7 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 /* routers */
 //GET
-//home page
+//login page
 router.get("/login", forwardAuthenticated, (req, res) => {
   res.render("login", {
     //this url address("/") will open the login.hbs file
@@ -20,7 +20,7 @@ router.get("/login", forwardAuthenticated, (req, res) => {
 }); /* routers */
 
 //GET
-//login page
+//register page
 router.get("/register", forwardAuthenticated, (req, res) => {
   res.render("register", {
     layout: "login",
@@ -100,26 +100,45 @@ router.post("/register", (req, res) => {
 
 // POST from login.hbs form
 // Login
-router.post("/login", (req, res, next) => {
-  //console.log(req.body.email);
+router.post(
+  "/login",
   passport.authenticate("local", {
-    // successRedirect: "/dashboard",
     failureRedirect: "/users/login",
     failureFlash: true,
-  })(req, res, next);
-  //when success login
-  res.render("dashboard", {
-    layout: "login",
-    name: req.body.email,
-  });
-});
+  }),
+  (req, res) => {
+    req.usedStrategy;
+    res.render("dashboard", {
+      layout: "login",
+      name: req.user.name,
+    });
+  }
+);
 
 //GET
 //Logout
 router.get("/logout", (req, res) => {
+  // req.session.destroy((err) => {
+  //   if (err) throw err;
+  //   res.redirect("/");
+  // });
   req.logout(); //passport middleware
-  req.flash("success_msg", "You are logged out");
+  //req.flash("success_msg", "You are logged out");
   res.redirect("/users/login");
 });
 
 module.exports = router;
+
+// router.post("/login", (req, res, next) => {
+//   /* login authentication*/
+//   passport.authenticate("local", {
+//     // successRedirect: "/dashboard",
+//     failureRedirect: "/users/login",
+//     failureFlash: true,
+//   })(req, res, next);
+//   /* when success login */
+//   res.render("dashboard", {
+//     layout: "login",
+//     // name: req.,
+//   });
+// });

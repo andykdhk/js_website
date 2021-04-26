@@ -4,6 +4,7 @@ const User = require("../models/UserGoogle");
 
 module.exports = function (passport) {
   passport.use(
+    "google",
     new GoogleStrategy(
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
@@ -20,6 +21,8 @@ module.exports = function (passport) {
         };
 
         try {
+          /**************************************** */
+          // req.usedStrategy = "google-user";
           let user = await User.findOne({ googleId: profile.id });
 
           if (user) {

@@ -56,7 +56,7 @@ app.use(
   session({
     secret: "secret",
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
