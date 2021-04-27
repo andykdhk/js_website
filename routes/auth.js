@@ -17,10 +17,23 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/users/login" }),
   (req, res) => {
-    res.render("dashboard", {
-      layout: "login",
-      name: req.user.lastName,
-    });
+    // console.log("auth.js: " + req.isAuthenticated() + req.user);
+    /********************************************************** */
+    // console.log("yeyeyey " + req.user.id);
+    // req.session.passport.user = req.user.id;
+    // req.session.save();
+    res.redirect("/dashboard");
+    /********************************************************** */
+    // req.session.save(() => {
+
+    //   res.redirect("/dashboard");
+    // });
+    // console.log(req.user.lastName);
+    // res.redirect("/dashboard");
+    // res.render("dashboard", {
+    //   layout: "login",
+    //   name: req.user.lastName,
+    // });
   }
 );
 

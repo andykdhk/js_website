@@ -1,21 +1,15 @@
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
     //login: YES
+    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
-      console.log("tell me: " + req.session.passport.user);
-      // if( local)
-      // {res.render()}
-      // else if(google)
-      // {res.render()}
-      // else{error}
-
       return next();
     }
     //login: NO
     //then, fire below methods
-    console.log("Error: auth");
+
     req.flash("error_msg", "Please log in to view that resource");
-    res.redirect("/users/login");
+    res.redirect("/");
   },
 
   forwardAuthenticated: function (req, res, next) {

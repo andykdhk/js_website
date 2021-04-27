@@ -30,10 +30,11 @@ router.get("/register", forwardAuthenticated, (req, res) => {
 //POST from register.hbs form
 //register
 router.post("/register", (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { firstName, lastName, email, password, password2 } = req.body;
+
   let errors = [];
 
-  if (!name || !email || !password || !password2) {
+  if (!firstName || !lastName || !email || !password || !password2) {
     errors.push({ msg: "Please enter all fields" });
   }
 
@@ -46,11 +47,13 @@ router.post("/register", (req, res) => {
   }
 
   if (errors.length > 0) {
+    console.log(firstName);
     res.render("register", {
       // if error occured, send errors and other varibles
       layout: "login",
       errors,
-      name,
+      firstName,
+      lastName,
       email,
       password,
       password2,
@@ -63,14 +66,16 @@ router.post("/register", (req, res) => {
         errors.push({ msg: "Email already exists" });
         res.render("register", {
           errors,
-          name,
+          firstName,
+          lastName,
           email,
           password,
           password2,
         });
       } else {
         const newUser = new User({
-          name,
+          firstName,
+          lastName,
           email,
           password,
         });
@@ -107,11 +112,12 @@ router.post(
     failureFlash: true,
   }),
   (req, res) => {
-    req.usedStrategy;
-    res.render("dashboard", {
-      layout: "login",
-      name: req.user.name,
-    });
+    res.redirect("/dashboard");
+    // req.usedStrategy;
+    // res.render("dashboard", {
+    //   layout: "login",
+    //   name: req.user.lastName,
+    // });
   }
 );
 

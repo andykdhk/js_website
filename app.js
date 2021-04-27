@@ -22,7 +22,7 @@ dotenv.config({ path: "./config/config.env" });
 
 // Passport Config
 require("./config/passport")(passport); //local strategy
-require("./config/passportGoogle")(passport); //google strategy
+//require("./config/passportGoogle")(passport); //google strategy
 
 /* DB connection */
 connectDB(); //use this manual
@@ -55,8 +55,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     secret: "secret",
-    resave: true,
+    resave: false,
     saveUninitialized: false,
+    // cookie: {
+    //   secure: false,
+    //   maxAge: 360 * 60 * 1000 * 24 * 365,
+    // },
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
