@@ -41,10 +41,27 @@ router.get("/", (req, res) => {
 //GET
 //dashboard page
 router.get("/dashboard", ensureAuthenticated, (req, res) => {
-  res.render("dashboard", {
-    layout: "login",
-    name: req.user.firstName,
-  });
+  console.log("tell me: " + req.user.loginType);
+
+  if (req.user.loginType === "local") {
+    res.render("dashboard", {
+      layout: "login",
+      name: req.user.firstName,
+      logout: "/users/logout",
+    });
+  } else if (req.user.loginType === "google") {
+    res.render("dashboard", {
+      layout: "login",
+      name: req.user.firstName,
+      logout: "/auth/logout",
+    });
+  } else {
+    console.log("error dashboard ");
+    res.render("dashboard", {
+      layout: "login",
+      name: req.user.firstName,
+    });
+  }
 });
 
 module.exports = router;

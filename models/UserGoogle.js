@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
+  loginType: {
+    type: String,
+    required: true,
+  },
   googleId: {
     type: String,
     required: true,

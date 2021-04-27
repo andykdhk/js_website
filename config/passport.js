@@ -19,6 +19,7 @@ module.exports = function (passport) {
       },
       async (accessToken, refreshToken, profile, done) => {
         const newUser = {
+          loginType: "google",
           googleId: profile.id,
           displayName: profile.displayName,
           firstName: profile.name.givenName,
@@ -33,6 +34,7 @@ module.exports = function (passport) {
             done(null, user);
           } else {
             user = await Userg.create(newUser);
+
             done(null, user);
           }
         } catch (err) {
@@ -98,6 +100,7 @@ module.exports = function (passport) {
       } else {
         Userg.findById(id, function (err, user) {
           if (err) done(err);
+
           done(null, user);
         });
       }

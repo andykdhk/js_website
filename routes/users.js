@@ -84,6 +84,8 @@ router.post("/register", (req, res) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
+            newUser.loginType = "local";
+            //**************************************************************************************************** */
             newUser
               /* Store at DB */
               .save()
