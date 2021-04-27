@@ -1,7 +1,7 @@
-/* users.js */
-//signIn/Up routes
+/*users.js */
+//purpose: handling local register, login and logout
 
-/* Setting */
+/* modules */
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
@@ -11,24 +11,23 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 /* routers */
 //GET
-//login page
-router.get("/login", forwardAuthenticated, (req, res) => {
-  res.render("login", {
-    //this url address("/") will open the login.hbs file
-    layout: "login",
-  });
-}); /* routers */
-
-//GET
-//register page
+//users/register
 router.get("/register", forwardAuthenticated, (req, res) => {
   res.render("register", {
     layout: "login",
   });
 });
 
-//POST from register.hbs form
-//register
+//GET
+//users/login
+router.get("/login", forwardAuthenticated, (req, res) => {
+  res.render("login", {
+    layout: "login",
+  });
+});
+
+//POST
+//users/register <----register.hbs
 router.post("/register", (req, res) => {
   const { firstName, lastName, email, password, password2 } = req.body;
 
@@ -85,13 +84,11 @@ router.post("/register", (req, res) => {
             if (err) throw err;
             newUser.password = hash;
             newUser.loginType = "local";
-            //**************************************************************************************************** */
+            /* Store at DB */
             newUser
-              /* Store at DB */
               .save()
               .then((user) => {
                 req.flash(
-                  //we are using flash msg instead of hsb because we are redirecting so we need to store at session
                   "success_msg",
                   "You are now registered and can log in"
                 );
@@ -105,48 +102,32 @@ router.post("/register", (req, res) => {
   }
 });
 
-// POST from login.hbs form
-// Login
+//POST
+//users/login <----login.hbs
 router.post(
   "/login",
   passport.authenticate("local", {
+    successRedirect: "/dashboard",
     failureRedirect: "/users/login",
     failureFlash: true,
-  }),
-  (req, res) => {
-    res.redirect("/dashboard");
-    // req.usedStrategy;
-    // res.render("dashboard", {
-    //   layout: "login",
-    //   name: req.user.lastName,
-    // });
-  }
+  })
 );
-
 //GET
-//Logout
+//users/logout
 router.get("/logout", (req, res) => {
-  // req.session.destroy((err) => {
-  //   if (err) throw err;
-  //   res.redirect("/");
-  // });
-  req.logout(); //passport middleware
-  //req.flash("success_msg", "You are logged out");
+  req.logout();
+  req.flash("success_msg", "You are logged out");
   res.redirect("/users/login");
 });
 
 module.exports = router;
 
-// router.post("/login", (req, res, next) => {
-//   /* login authentication*/
-//   passport.authenticate("local", {
-//     // successRedirect: "/dashboard",
-//     failureRedirect: "/users/login",
-//     failureFlash: true,
-//   })(req, res, next);
-//   /* when success login */
-//   res.render("dashboard", {
-//     layout: "login",
-//     // name: req.,
-//   });
+/*NOTES*************************************************************/
+//*otherway logout
+// req.session.destroy((err) => {
+//   if (err) throw err;
+//   res.redirect("/");
 // });
+//*we are using flash msg instead of hsb because we are redirecting so we need to store at session
+//*not working, maybe passport version issue
+// successFlash: "Welcome!",

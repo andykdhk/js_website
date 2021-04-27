@@ -1,7 +1,7 @@
 /* index.js */
-//main routes
+//purpose: main routes
 
-/* Setting */
+/* modules */
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
@@ -9,40 +9,28 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 /* routers */
 //GET
-//home page
+//home
 router.get("/", (req, res) => {
   if (!req.isAuthenticated()) {
     res.render("home", {
-      //this url address("/") will open the home.hbs file
+      welcomeMsg: "Nice to meet you",
       layout: "main",
       name: "guest",
     });
   } else if (req.isAuthenticated()) {
-    // console.log(req.user);
     res.render("home", {
-      //this url address("/") will open the home.hbs file
+      welcomeMsg: "Welcome back!!",
       layout: "main",
       name: req.user.firstName,
     });
   } else {
     console.log("error home page");
   }
-}); /* routers */
+});
 
 //GET
-//login page
-//make sure no previous login
-// router.get("/login", (req, res) => {
-//   res.render("login", {
-//     layout: "login",
-//   });
-// });
-
-//GET
-//dashboard page
+//dashboard
 router.get("/dashboard", ensureAuthenticated, (req, res) => {
-  console.log("tell me: " + req.user.loginType);
-
   if (req.user.loginType === "local") {
     res.render("dashboard", {
       layout: "login",
@@ -65,30 +53,3 @@ router.get("/dashboard", ensureAuthenticated, (req, res) => {
 });
 
 module.exports = router;
-
-//  passport.authenticate("local", { failureRedirect: "/" }),
-// (req, res) => {
-//   res.render("dashboard", {
-//     //this url address("/") will open the home.hbs file
-//     layout: "login",
-//     name: req.user.firstName,
-//   });
-// };
-//   passport.authenticate("local", { failureRedirect: "/" }),
-//     (req, res) => {
-//       res.render("dashboard", {
-//         //this url address("/") will open the home.hbs file
-//         layout: "login",
-//         name: req.user.firstName,
-//       });
-//     };
-// else if(){
-// }
-//   passport.authenticate("google", { failureRedirect: "/" }),
-//     (req, res) => {
-//       res.render("dashboard", {
-//         //this url address("/") will open the home.hbs file
-//         layout: "login",
-//         name: req.user.firstName,
-//       });
-//     };

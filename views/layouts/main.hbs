@@ -1,20 +1,18 @@
 <!DOCTYPE html >
 <html>
 
-
     <head>
         <link rel="stylesheet" href="/css/style.css">
         <title>Idol Portal Main</title>  
     </head>
 
-    <body>
-       
-   {{> _messages}}
+    <body>     
+        {{> _messages}}
         <div class = "container"> {{!-- push everything to middle  --}}
-         {{> _header}}
-         {{{body}}}
+        
+         {{{body}}}{{!-- get a main page body  --}}
          
-            <div class="section"></div>
+            <div class="section">
              <h3>Create an account or login</h3>
 
                 <a href="/users/register" class="btn btn-primary btn-block mb-2">
@@ -24,17 +22,12 @@
                 <a href="/auth/google" class="btn red darken-1">
                     <i class="fab fa-google left"></i> 
                  Log In With Google</a>
-            </div>
-            <div class="section_dashboard"></div>
-                <a href="/dashboard" class="btn btn-secondary btn-block">
-                Dashboard</a>
-            </div>
-           
-            
 
-        </div>
-
-       
-
+                 <div class="section_dashboard"> 
+                  <a href="/dashboard" class="btn btn-secondary btn-block">
+                  Dashboard</a>
+                 </div>
+            </div>   
+        </div>     
     </body>
 </html>

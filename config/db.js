@@ -1,4 +1,5 @@
-/*DB connection */
+/*db.js */
+//purpose: DB connection
 
 /* Load module */
 const mongoose = require("mongoose"); //go get a manual of mongoose

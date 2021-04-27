@@ -57,10 +57,6 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: false,
-    // cookie: {
-    //   secure: false,
-    //   maxAge: 360 * 60 * 1000 * 24 * 365,
-    // },
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
@@ -91,6 +87,7 @@ app.use("/auth", require("./routes/auth")); //lv2\
 /* Variables */
 const PORT = process.env.PORT || 3000;
 
+/* START SERVER*/
 app.listen(
   PORT,
   console.log(

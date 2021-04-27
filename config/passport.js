@@ -1,6 +1,14 @@
+/*passport.js */
+//purpose: handling local and google login
+//functions:
+//1.passport.use( "google",new GoogleStrategy
+//2.passport.use("local",new LocalStrategy
+//3.passport.serializeUser(function (user, done)
+//4.passport.derializeUser(function (id, done)
+
+/* modules */
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
@@ -81,17 +89,6 @@ module.exports = function (passport) {
   });
 
   // 매개변수 id는 세션에 저장됨 값(req.session.passport.user)
-  // passport.deserializeUser(function (id, done) {
-  //   User.findById(id, function (err, user) {
-  //     done(err, user);
-  //   });
-  // });
-  //   passport.deserializeUser(function (id, done) {
-  //     Userg.findById(id, function (err, user) {
-  //       done(err, user);
-  //     });
-  //   });
-
   passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
       if (err) done(err);
