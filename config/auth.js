@@ -3,6 +3,7 @@
 //functions:
 //1.ensureAuthenticated: function (req, res, next)
 //2.forwardAuthenticated: function (req, res, next)
+
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
     //login: YES
