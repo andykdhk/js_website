@@ -25,6 +25,7 @@ router.get(
   forwardAuthenticated,
   userController.user_get_findPw_email
 );
+router.get("/changePw", ensureAuthenticated, userController.user_get_changePw);
 /* POST */
 router.post("/register", userController.user_post_register); //users/register <----register.hbs
 router.post("/login", userController.user_post_login); //users/login <----login.hbs
@@ -33,5 +34,9 @@ router.post("/find/pw", forwardAuthenticated, userController.user_post_findPw);
 router.post("/find/pw/email", userController.user_post_email); //users/login <----login.hbs
 
 router.post("/delete/:id", userController.user_delete_user);
-
+router.post(
+  "/changePw",
+  ensureAuthenticated,
+  userController.user_post_changePw
+);
 module.exports = router;

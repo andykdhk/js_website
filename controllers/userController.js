@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const nodemailer = require("nodemailer");
+const generator = require("generate-password");
 /* functions */
 //************************************************************GET REGISTER
 const user_get_register = (req, res) => {
@@ -163,11 +164,14 @@ const user_get_findPw = (req, res) => {
   });
 };
 const user_post_findPw = (req, res) => {
-  console.log("post: " + req.body.email);
-  User.findOne({ email: req.body.email }).then((user) => {
+  const user = req.body;
+
+  User.findOne({ email: user.email }).then((user) => {
     // make sure user DNE// DB:CONST
     if (user) {
       console.log("Email exists and id: " + user.id);
+      req.session.user = user.id;
+      //req.session.save();
       res.render("findPwEmail", {
         layout: "login",
       });
@@ -185,7 +189,14 @@ const user_get_findPw_email = (req, res) => {
   });
 };
 const user_post_email = (req, res) => {
-  const userEmail = req.body.email;
+  const recvEmail = req.body.email;
+  const userId = req.session.user;
+  console.log("send to " + recvEmail);
+  console.log("find this id " + userId);
+  var randomPw = generator.generate({
+    length: 10,
+    numbers: true,
+  });
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -203,9 +214,9 @@ const user_post_email = (req, res) => {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"idol portal" <fxnusp2@gmail.com>', // sender address
-    to: userEmail, // list of receivers
+    to: recvEmail, // list of receivers
     subject: "Node mail test", // Subject line
-    text: "Hello world? this is ur temporary password bitch 222222", // plain text body
+    text: `Hello world? this is ur temporary password bitch ${randomPw}`, // plain text body
     // html: output, // html body
   };
 
@@ -220,32 +231,76 @@ const user_post_email = (req, res) => {
     /*********************************************************************************************** */
     //update pw
 
-    User.findOne({ email: userEmail }, function (err, user) {
+    User.findOne({ _id: userId }, function (err, user) {
       if (err) {
         console.log(err);
       } else {
-        console.log("Result : ", user.id);
-        User.findByIdAndUpdate(
-          user.id,
-          {
-            password:
-              "$2a$10$y162I5AoB0ZrxlKipDtjEe4vC/9SrVO7g08MhHIgnINN001I3qwDi",
-          },
-          function (err, user) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("Updated User : ", user.password);
-              res.redirect("/users/login");
-            }
-          }
-        );
-        //last go back to login page
+        /*********************************************************** */
+
+        console.log("temporary pw: ", randomPw);
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(randomPw, salt, (err, hash) => {
+            if (err) throw err;
+            let newPw = hash;
+            console.log("temporary new pw1: ", newPw);
+            User.findByIdAndUpdate(
+              user.id,
+              { password: newPw },
+              function (err, user) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.redirect("/users/login");
+                }
+              }
+            );
+          });
+        });
       }
     });
   });
 };
+const user_get_changePw = (req, res) => {
+  res.render("changePw", {
+    layout: "login",
+  });
+};
+const user_post_changePw = (req, res) => {
+  const newPw1 = req.body.password;
+  const newPw2 = req.body.password2;
+  console.log(newPw1, newPw2);
 
+  if (newPw1 !== newPw2) {
+    req.flash("error_msg", "not equal");
+    res.redirect("/users/changePw");
+  } else if (newPw1.length < 6) {
+    req.flash("error_msg", "too less");
+    res.redirect("/users/changePw");
+  } else {
+    /**update it */
+    console.log("user.id: ", req.user.id);
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newPw1, salt, (err, hash) => {
+        if (err) throw err;
+        let newPw = hash;
+        console.log("temporary new pw: ", newPw);
+        User.findByIdAndUpdate(
+          req.user.id,
+          { password: newPw },
+          function (err, user) {
+            if (err) {
+              console.log(err);
+            } else {
+              res.redirect("/");
+            }
+          }
+        );
+      });
+    });
+  }
+};
 module.exports = {
   user_get_register,
   user_get_login,
@@ -260,6 +315,8 @@ module.exports = {
   user_post_findPw,
   user_get_findPw_email,
   user_post_email,
+  user_get_changePw,
+  user_post_changePw,
 };
 /*NOTES*************************************************************/
 //*otherway logout
