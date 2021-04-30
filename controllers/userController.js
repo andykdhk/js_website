@@ -43,7 +43,7 @@ const user_post_register = (req, res) => {
     console.log(firstName);
     res.render("register", {
       // if error occured, send errors and other varibles
-      // layout: "login",
+      layout: "layout",
       errors,
       firstName,
       lastName,
@@ -110,8 +110,9 @@ const user_delete_page = (req, res) => {
   User.findById(id)
     .then((result) => {
       res.render("delete", {
-        //layout: "login",
+        layout: "layouts/userLayout",
         userId: id,
+        logout: "/users/logout",
       });
     })
     .catch((err) => {
@@ -150,13 +151,13 @@ const user_get_find = (req, res) => {
 };
 const user_get_findEmail = (req, res) => {
   res.render("findUser", {
-    // layout: "login",
+    layout: "layouts/layout",
   });
 };
 const user_get_findPw = (req, res) => {
   console.log("get: " + req.body.name);
   res.render("findPw", {
-    // layout: "login",
+    layout: "layouts/layout",
   });
 };
 const user_post_findPw = (req, res) => {
@@ -169,19 +170,19 @@ const user_post_findPw = (req, res) => {
       req.session.user = user.id;
       //req.session.save();
       res.render("findPwEmail", {
-        // layout: "login",
+        layout: "layouts/layout",
       });
     } else {
       console.log("email does not exist");
       res.render("findPw", {
-        // layout: "login",
+        layout: "layouts/layout",
       });
     }
   });
 };
 const user_get_findPw_email = (req, res) => {
   res.render("findPwEmail", {
-    //layout: "login",
+    layout: "layouts/layout",
   });
 };
 const user_post_email = (req, res) => {
@@ -259,7 +260,9 @@ const user_post_email = (req, res) => {
 };
 const user_get_changePw = (req, res) => {
   res.render("changePw", {
-    //layout: "login",
+    layout: "layouts/userLayout",
+    userId: req.user.id,
+    logout: "/users/logout",
   });
 };
 const user_post_changePw = (req, res) => {
