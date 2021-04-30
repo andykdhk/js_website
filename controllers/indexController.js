@@ -5,16 +5,18 @@ const User = require("../models/User");
 const index_home = (req, res) => {
   if (!req.isAuthenticated()) {
     res.render("home", {
+      layout: "layouts/layout",
       welcomeMsg: "Nice to meet you",
-      layout: "main",
       userName: "guest",
+      userId: "",
     });
   } else if (req.isAuthenticated()) {
     res.render("home", {
+      layout: "layouts/userLayout",
       welcomeMsg: "Welcome back!!",
-      layout: "main",
       userName: req.user.firstName,
       userId: req.user.id,
+      logout: "/users/logout",
     });
   } else {
     console.log("error home page");
@@ -25,20 +27,21 @@ const index_home = (req, res) => {
 const index_dashboard = (req, res) => {
   if (req.user.loginType === "local") {
     res.render("dashboard", {
-      layout: "login",
-      name: req.user.firstName,
+      layout: "layouts/userLayout",
+      userName: req.user.firstName,
+      userId: req.user.id,
       logout: "/users/logout",
     });
   } else if (req.user.loginType === "google") {
     res.render("dashboard", {
-      layout: "login",
-      name: req.user.firstName,
+      layout: "layouts/userLayout",
+      userName: req.user.firstName,
+      userId: req.user.id,
       logout: "/auth/logout",
     });
   } else {
     console.log("error dashboard ");
     res.render("dashboard", {
-      layout: "login",
       name: req.user.firstName,
     });
   }

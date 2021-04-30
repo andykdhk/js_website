@@ -17,6 +17,7 @@ const flash = require("connect-flash"); //message middleware for Connect.
 const session = require("express-session"); //a middleware: creating the session, setting the session cookie and creating the session object in req object
 const MongoStore = require("connect-mongo")(session); //MongoStore (or RedisStore) allows you to store the Express sessions into MongoDB/Redis instead of using the MemoryStore, which is not designed for a production environment.
 const passport = require("passport"); //authentication middleware
+const expressLayouts = require("express-ejs-layouts");
 
 /* Load config */
 dotenv.config({ path: "./config/config.env" });
@@ -36,16 +37,21 @@ if (process.env.NODE_ENV === "development") {
 }
 
 /* Handlebars(express-handlebars) */
-app.engine(
-  ".hbs",
-  exphbs({
-    defaultLayout: "main",
-    layoutsDir: __dirname + "/views/layouts/",
-    partialsDir: __dirname + "/views/partials/",
-    extname: ".hbs",
-  })
-);
-app.set("view engine", ".hbs");
+// app.engine(
+//   ".hbs",
+//   exphbs({
+//     defaultLayout: "main",
+//     layoutsDir: __dirname + "/views/layouts/",
+//     partialsDir: __dirname + "/views/partials/",
+//     extname: ".hbs",
+//   })
+// );
+// app.set("view engine", ".hbs");
+
+// EJS
+app.use(expressLayouts);
+app.set("views", path.join(__dirname, "/views/ejs"));
+app.set("view engine", "ejs");
 
 /* Bodyparser */
 app.use(express.urlencoded({ extended: false }));
@@ -78,7 +84,7 @@ app.use(function (req, res, next) {
 });
 
 /* Static folder */
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 /* Routes */
 app.use("/", require("./routes/index"));

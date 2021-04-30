@@ -7,3 +7,12 @@ p {
   margin-top: 50px;
   text-align: center;
 }
+.dropdown-menu {
+  left: inherit !important;
+  right: 0px;
+}
+.card {
+  margin-top: 10%;
+  margin-left: 20%;
+  margin-right: 20%;
+}

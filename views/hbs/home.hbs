@@ -1,0 +1,30 @@
+{{!-- HOME page --}}
+
+<!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="/users/login">Login</a></li>
+  <li><a href="/auth/google"> Log In With Google</a></li>
+  <li><a href="/users/register"> Register</a></li>
+   <li><a href="/users/find">Find ID/PW</a></li>
+  <li class="divider"></li>
+
+  <li><a href="/users/changePw">Change PW</a></li>
+  <li><a href="/users/delete/{{userId}}">Delete Account</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">Logo</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="badges.html">About</a></li>
+      <!-- Dropdown Trigger -->
+      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Login<i class="material-icons right">arrow_drop_down</i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<h3>{{ welcomeMsg }}</h3>
+<h4>User: {{ userName }}</h4>
+
+
