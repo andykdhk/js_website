@@ -8,7 +8,7 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 const userController = require("../controllers/userController");
 
 /* routers */
-/* GET */
+//GET
 router.get("/register", forwardAuthenticated, userController.user_get_register);
 router.get("/login", forwardAuthenticated, userController.user_get_login);
 router.get("/logout", ensureAuthenticated, userController.user_get_logout);
@@ -27,7 +27,7 @@ router.get(
 );
 router.get("/changePw", ensureAuthenticated, userController.user_get_changePw);
 
-/* POST */
+//POST
 router.post("/register", userController.user_post_register);
 router.post("/login", userController.user_post_login);
 router.post("/find/pw", forwardAuthenticated, userController.user_post_findPw);

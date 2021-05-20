@@ -4,14 +4,14 @@
 /* modules */
 const express = require("express");
 const router = express.Router();
-const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth"); //preventing user from entering page without login
+const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 const authController = require("../controllers/authController");
 
 /* routers */
-/* GET */
-router.get("/google", forwardAuthenticated, authController.auth_get_auth); //auth/google
-router.get("/google/callback", authController.auth_get_login); //auth/google/callback
-router.get("/logout", authController.auth_get_logout); //auth/logout
+//GET
+router.get("/google", forwardAuthenticated, authController.auth_get_auth);
+router.get("/google/callback", authController.auth_get_login);
+router.get("/logout", authController.auth_get_logout);
 
 /* Export module*/
 module.exports = router;

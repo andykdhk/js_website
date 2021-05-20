@@ -6,6 +6,7 @@ const passport = require("passport");
 const User = require("../models/UserGoogle");
 
 /* functions */
+//GET
 //************************************************************GET AUTH
 const auth_get_auth = (req, res) => {
   passport.authenticate("google", {

@@ -6,6 +6,7 @@ const passport = require("passport");
 const User = require("../models/User");
 
 /* functions */
+//GET
 //************************************************************GET HOME
 const index_home = (req, res) => {
   /* before login */

@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
 const generator = require("generate-password");
 
 /* functions */
-/* GET */
+//GET
 //************************************************************GET REGISTER
 const user_get_register = (req, res) => {
   res.render("register", { layout: "layouts/layout" });
@@ -58,7 +58,7 @@ const user_get_changePw = (req, res) => {
   });
 };
 
-/* POST */
+//POST
 //************************************************************POST REGISTER
 const user_post_register = (req, res) => {
   const { firstName, lastName, email, password, password2 } = req.body;
@@ -139,7 +139,6 @@ const user_post_login = passport.authenticate("local", {
   failureRedirect: "/users/login",
   failureFlash: true,
 });
-
 //************************************************************POST findpw
 const user_post_findPw = (req, res) => {
   const user = req.body;
@@ -272,7 +271,7 @@ const user_post_changePw = (req, res) => {
   }
 };
 
-/* DELETE */
+//DELETE
 //************************************************************DELETE user
 const user_delete_page = (req, res) => {
   const id = req.params.id;
