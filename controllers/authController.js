@@ -1,3 +1,7 @@
+/* authController.js */
+//purpose: auth.js route controller
+
+/* Modules*/
 const passport = require("passport");
 const User = require("../models/UserGoogle");
 
@@ -21,9 +25,9 @@ const auth_get_logout = (req, res) => {
   req.logout();
   req.flash("success_msg", "G logged out");
   res.redirect(process.env.GOOGLE_LOGOUT_PATH);
-  s;
 };
 
+/* Export module*/
 module.exports = {
   auth_get_auth,
   auth_get_login,
@@ -31,11 +35,11 @@ module.exports = {
 };
 
 /*NOTES*************************************************************/
-// save in session manually
+// save in session manually:
 // req.session.save(() => {
 // req.session.passport.user = req.user.id;
 //   res.redirect("/dashboard");
 // });
-// delete a session manually
+// delete a session manually:
 // req.session.destroy();
 // res.clearCookie("connect.sid");

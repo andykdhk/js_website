@@ -1,26 +1,64 @@
+/* userController.js */
+//purpose: users.js route controller
+
+/* Modules*/
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const nodemailer = require("nodemailer");
 const generator = require("generate-password");
+
 /* functions */
+/* GET */
 //************************************************************GET REGISTER
 const user_get_register = (req, res) => {
   res.render("register", { layout: "layouts/layout" });
 };
-
 //************************************************************GET LOGIN
 const user_get_login = (req, res) => {
   res.render("login", { layout: "layouts/layout" });
 };
-
 //************************************************************GET LOGOUT
 const user_get_logout = (req, res) => {
   req.logout();
   req.flash("success_msg", "You are logged out");
   res.redirect("/");
 };
+//************************************************************GET find
+const user_get_find = (req, res) => {
+  res.render("find", {
+    layout: "layouts/layout",
+  });
+};
+//************************************************************GET findEmail
+const user_get_findEmail = (req, res) => {
+  res.render("findUser", {
+    layout: "layouts/layout",
+  });
+};
+//************************************************************GET finpw
+const user_get_findPw = (req, res) => {
+  console.log("get: " + req.body.name);
+  res.render("findPw", {
+    layout: "layouts/layout",
+  });
+};
+//************************************************************GET findpw email
+const user_get_findPw_email = (req, res) => {
+  res.render("findPwEmail", {
+    layout: "layouts/layout",
+  });
+};
+//************************************************************GET changepw
+const user_get_changePw = (req, res) => {
+  res.render("changePw", {
+    layout: "layouts/userLayout",
+    userId: req.user.id,
+    logout: "/users/logout",
+  });
+};
 
+/* POST */
 //************************************************************POST REGISTER
 const user_post_register = (req, res) => {
   const { firstName, lastName, email, password, password2 } = req.body;
@@ -95,7 +133,6 @@ const user_post_register = (req, res) => {
     });
   }
 };
-
 //************************************************************POST LOGIN
 const user_post_login = passport.authenticate("local", {
   successRedirect: "/",
@@ -103,63 +140,7 @@ const user_post_login = passport.authenticate("local", {
   failureFlash: true,
 });
 
-//************************************************************DELETE user
-const user_delete_page = (req, res) => {
-  const id = req.params.id;
-
-  User.findById(id)
-    .then((result) => {
-      res.render("delete", {
-        layout: "layouts/userLayout",
-        userId: id,
-        logout: "/users/logout",
-      });
-    })
-    .catch((err) => {
-      console.log("sibal");
-      console.log(err);
-    });
-};
-const user_delete_user = async (req, res) => {
-  console.log("im here");
-  try {
-    let user = await User.findById(req.params.id).lean();
-
-    if (!user) {
-      console.log("error/404");
-      return res.render("/");
-    }
-    if (user._id != req.user.id) {
-      console.log("error: " + user._id);
-      res.redirect("/");
-    } else {
-      await User.remove({ _id: req.params.id });
-      console.log("user deleted");
-      res.redirect("/");
-    }
-  } catch (err) {
-    console.error(err);
-    console.log("error/500");
-    return res.render("/");
-  }
-};
-
-const user_get_find = (req, res) => {
-  res.render("find", {
-    layout: "layouts/layout",
-  });
-};
-const user_get_findEmail = (req, res) => {
-  res.render("findUser", {
-    layout: "layouts/layout",
-  });
-};
-const user_get_findPw = (req, res) => {
-  console.log("get: " + req.body.name);
-  res.render("findPw", {
-    layout: "layouts/layout",
-  });
-};
+//************************************************************POST findpw
 const user_post_findPw = (req, res) => {
   const user = req.body;
 
@@ -180,11 +161,7 @@ const user_post_findPw = (req, res) => {
     }
   });
 };
-const user_get_findPw_email = (req, res) => {
-  res.render("findPwEmail", {
-    layout: "layouts/layout",
-  });
-};
+//************************************************************POST email
 const user_post_email = (req, res) => {
   const recvEmail = req.body.email;
   const userId = req.session.user;
@@ -258,13 +235,7 @@ const user_post_email = (req, res) => {
     });
   });
 };
-const user_get_changePw = (req, res) => {
-  res.render("changePw", {
-    layout: "layouts/userLayout",
-    userId: req.user.id,
-    logout: "/users/logout",
-  });
-};
+//************************************************************POST change pw
 const user_post_changePw = (req, res) => {
   const newPw1 = req.body.password;
   const newPw2 = req.body.password2;
@@ -300,6 +271,51 @@ const user_post_changePw = (req, res) => {
     });
   }
 };
+
+/* DELETE */
+//************************************************************DELETE user
+const user_delete_page = (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then((result) => {
+      res.render("delete", {
+        layout: "layouts/userLayout",
+        userId: id,
+        logout: "/users/logout",
+      });
+    })
+    .catch((err) => {
+      console.log("sibal");
+      console.log(err);
+    });
+};
+//************************************************************DELETE LOGIN
+const user_delete_user = async (req, res) => {
+  console.log("im here");
+  try {
+    let user = await User.findById(req.params.id).lean();
+
+    if (!user) {
+      console.log("error/404");
+      return res.render("/");
+    }
+    if (user._id != req.user.id) {
+      console.log("error: " + user._id);
+      res.redirect("/");
+    } else {
+      await User.remove({ _id: req.params.id });
+      console.log("user deleted");
+      res.redirect("/");
+    }
+  } catch (err) {
+    console.error(err);
+    console.log("error/500");
+    return res.render("/");
+  }
+};
+
+/* Export module*/
 module.exports = {
   user_get_register,
   user_get_login,
@@ -317,6 +333,7 @@ module.exports = {
   user_get_changePw,
   user_post_changePw,
 };
+
 /*NOTES*************************************************************/
 //*otherway logout
 // req.session.destroy((err) => {

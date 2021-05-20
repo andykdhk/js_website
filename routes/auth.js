@@ -13,4 +13,5 @@ router.get("/google", forwardAuthenticated, authController.auth_get_auth); //aut
 router.get("/google/callback", authController.auth_get_login); //auth/google/callback
 router.get("/logout", authController.auth_get_logout); //auth/logout
 
+/* Export module*/
 module.exports = router;

@@ -1,5 +1,5 @@
 /* app.js */
-//set environments
+//set modules
 //start db
 //connects to index route
 //start server

@@ -1,3 +1,7 @@
+/*nodemailer.js */
+//purpose: send email when change pw
+
+/* structs */
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
   host: "mail.YOURDOMAIN.com",
@@ -21,6 +25,7 @@ let mailOptions = {
   html: output, // html body
 };
 
+/* function */
 // send mail with defined transport object
 transporter.sendMail(mailOptions, (error, info) => {
   if (error) {

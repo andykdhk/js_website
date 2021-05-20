@@ -1,10 +1,10 @@
 /*passport.js */
 //purpose: handling local and google login
 //functions:
-//1.passport.use( "google",new GoogleStrategy
-//2.passport.use("local",new LocalStrategy
-//3.passport.serializeUser(function (user, done)
-//4.passport.derializeUser(function (id, done)
+//  1)passport.use( "google",new GoogleStrategy
+//  2)passport.use("local",new LocalStrategy
+//  3)passport.serializeUser(function (user, done)
+//  4)passport.derializeUser(function (id, done)
 
 /* modules */
 const LocalStrategy = require("passport-local").Strategy;
@@ -16,6 +16,7 @@ const Userg = require("../models/UserGoogle");
 
 /* Export module */
 module.exports = function (passport) {
+  /* GoogleStrategy */
   passport.use(
     "google",
     new GoogleStrategy(
@@ -37,12 +38,10 @@ module.exports = function (passport) {
 
         try {
           let user = await Userg.findOne({ googleId: profile.id });
-
           if (user) {
             done(null, user);
           } else {
             user = await Userg.create(newUser);
-
             done(null, user);
           }
         } catch (err) {
@@ -51,12 +50,13 @@ module.exports = function (passport) {
       }
     )
   );
+  /* LocalStrategy */
   passport.use(
     "local",
     new LocalStrategy(
       { usernameField: "email", passReqToCallback: true },
       (req, email, password, done) => {
-        // Match user
+        /* Match user */
         User.findOne({
           email: email,
         }).then((user) => {
@@ -66,12 +66,10 @@ module.exports = function (passport) {
             });
           }
 
-          // Match password
+          /* Match password */
           bcrypt.compare(password, user.password, (err, isMatch) => {
-            //
             if (err) throw err;
             if (isMatch) {
-              // /**************************************** */
               req.usedStrategy = "local-user";
               return done(null, user);
             } else {
@@ -82,12 +80,13 @@ module.exports = function (passport) {
       }
     )
   );
+  /* SERIALIZE */
   // LocalStrategy에서 받은 user정보에서 user.id 만 session에 정보 저장
   passport.serializeUser(function (user, done) {
     console.log("serialization: " + user.id);
     done(null, user.id);
   });
-
+  /* DESERIALIZE */
   // 매개변수 id는 세션에 저장됨 값(req.session.passport.user)
   passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {

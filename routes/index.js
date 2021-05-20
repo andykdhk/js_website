@@ -12,4 +12,5 @@ const indexController = require("../controllers/indexController");
 router.get("/", indexController.index_home); //home
 router.get("/dashboard", ensureAuthenticated, indexController.index_dashboard); //dashboard
 
+/* Export module*/
 module.exports = router;
