@@ -4,7 +4,7 @@
       <%= story.title %>
       <!-- <small>{{{editIcon story.user user story._id false}}}</small> -->
     </h3>
-    <h3><%= story.body %></h3>
+    <h3><%= helpers.stripTags(story.body) %></h3>
     <!-- <div class="card story">
       <div class="card-content">
         <span

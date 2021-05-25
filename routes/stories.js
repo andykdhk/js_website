@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth"); //preventing user from entering page without login
 const Story = require("../models/Story");
+const helperEjs = require("../helpers/ejs");
 
 // @desc    Show add page
 // @route   GET /stories/add
@@ -42,7 +43,7 @@ router.get("/", ensureAuthenticated, async (req, res) => {
       userName: req.user.firstName,
       userId: req.user.id,
       logout: "/users/logout",
-
+      helpers: helperEjs,
       stories,
     });
   } catch (err) {
@@ -69,7 +70,7 @@ router.get("/:id", ensureAuthenticated, async (req, res) => {
         userName: req.user.firstName,
         userId: req.user.id,
         logout: "/users/logout",
-
+        helpers: helperEjs,
         story,
       });
     }

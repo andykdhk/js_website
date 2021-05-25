@@ -7,18 +7,19 @@
     <div class="card">
       <div class="card-content center-align">
         <h5><%= val.title %></h5>
+        <p><%= helpers.stripTags(helpers.truncate( val.body, 50)) %></p>
         <br />
-        <!-- <div class="chip">
-          <img src="{{ user.image }}" alt="" />
-          <a href="/stories/user/<%= val.id %>"><%= user.displayName %></a>
-        </div> -->
+        <div class="chip">
+          <!-- <img src="{{ user.image }}" alt="" /> -->
+          <a href="/stories/user/<%= val._id %>"><%= val.displayName %></a>
+        </div>
       </div>
       <div class="card-action center-align">
-        <a href="/stories/<%= val.id %>" class="btn grey">Read More</a>
+        <a href="/stories/<%= val._id %>" class="btn grey">Read More</a>
       </div>
     </div>
-    <% })} else{ %>
-    <p>No stories to display</p>
-    <% }%>
   </div>
+  <% })} else{ %>
+  <p>No stories to display</p>
+  <% }%>
 </div>

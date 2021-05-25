@@ -5,6 +5,7 @@
 const passport = require("passport");
 const User = require("../models/User");
 const Story = require("../models/Story");
+const helperEjs = require("../helpers/ejs");
 
 /* functions */
 //GET
@@ -45,6 +46,7 @@ const index_dashboard = async (req, res) => {
         userName: req.user.firstName,
         userId: req.user.id,
         logout: "/users/logout",
+        helpers: helperEjs,
         stories,
       });
       /* google login */

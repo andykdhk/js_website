@@ -48,6 +48,9 @@ if (process.env.NODE_ENV === "development") {
 // );
 // app.set("view engine", ".hbs");
 
+/* EJS helpers*/
+// const formatDate = require("./helpers/ejs");
+
 /* EJS */
 app.use(expressLayouts);
 app.set("views", path.join(__dirname, "/views/ejs"));
