@@ -1,2 +1,29 @@
 <h2>Dashboard</h2>
-<h3>User:<%= userName %></h3>
+<p>User:<%= userName %></p>
+
+<% if(typeof stories == 'object' && stories.length > 0){%>
+<p>yes you do have stories</p>
+<table class="striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% stories.forEach(function(val){ %>
+    <tr>
+      <td>
+        <a href="/stories/<%= val._id %>"><%= val.title %></a>
+      </td>
+      <td><%= val.createdAt %></td>
+      <td>
+        <span class="dash-status"><%= val.status %></span>
+      </td>
+    </tr>
+    <% })} else{ %>
+    <p>you have not created any stories</p>
+    <% } %>
+  </tbody>
+</table>

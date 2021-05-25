@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "development") {
 // );
 // app.set("view engine", ".hbs");
 
-// EJS
+/* EJS */
 app.use(expressLayouts);
 app.set("views", path.join(__dirname, "/views/ejs"));
 app.set("view engine", "ejs");
@@ -56,6 +56,7 @@ app.set("view engine", "ejs");
 /* Bodyparser */
 app.use(express.urlencoded({ extended: false }));
 //app.use(express.json());
+
 /* Express-session */
 app.use(
   session({
@@ -70,10 +71,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect flash
+/* Connect flash */
 app.use(flash());
 
-// Global variables
+/* Global variables */
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
@@ -90,6 +91,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/auth", require("./routes/auth"));
+app.use("/stories", require("./routes/stories"));
 
 /* Variables */
 const PORT = process.env.PORT || 3000;

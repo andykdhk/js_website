@@ -4,6 +4,7 @@
 /* Modules*/
 const passport = require("passport");
 const User = require("../models/User");
+const Story = require("../models/Story");
 
 /* functions */
 //GET
@@ -33,29 +34,37 @@ const index_home = (req, res) => {
 };
 
 //************************************************************GET DASHBOARD
-const index_dashboard = (req, res) => {
-  /* local login */
-  if (req.user.loginType === "local") {
-    res.render("dashboard", {
-      layout: "layouts/userLayout",
-      userName: req.user.firstName,
-      userId: req.user.id,
-      logout: "/users/logout",
-    });
-    /* google login */
-  } else if (req.user.loginType === "google") {
-    res.render("dashboard", {
-      layout: "layouts/userLayout",
-      userName: req.user.firstName,
-      userId: req.user.id,
-      logout: "/auth/logout",
-    });
-    /* Error */
-  } else {
-    console.log("error dashboard ");
-    res.render("dashboard", {
-      name: req.user.firstName,
-    });
+const index_dashboard = async (req, res) => {
+  try {
+    const stories = await Story.find({ user: req.user.id }).lean();
+    console.log("this is story:", stories);
+    /* local login */
+    if (req.user.loginType === "local") {
+      res.render("dashboard", {
+        layout: "layouts/userLayout",
+        userName: req.user.firstName,
+        userId: req.user.id,
+        logout: "/users/logout",
+        stories,
+      });
+      /* google login */
+    } else if (req.user.loginType === "google") {
+      res.render("dashboard", {
+        layout: "layouts/userLayout",
+        userName: req.user.firstName,
+        userId: req.user.id,
+        logout: "/auth/logout",
+        stories,
+      });
+    } else {
+      console.log("error dashboard ");
+      res.render("dashboard", {
+        name: req.user.firstName,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.render("error/500");
   }
 };
 

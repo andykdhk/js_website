@@ -1,0 +1,24 @@
+<h1>Stories</h1>
+<div class="row">
+  <% if(typeof stories == 'object' && stories.length > 0){%>
+  <p>yes you do have stories</p>
+  <% stories.forEach(function(val){ %>
+  <div class="col s12 m4">
+    <div class="card">
+      <div class="card-content center-align">
+        <h5><%= val.title %></h5>
+        <br />
+        <!-- <div class="chip">
+          <img src="{{ user.image }}" alt="" />
+          <a href="/stories/user/<%= val.id %>"><%= user.displayName %></a>
+        </div> -->
+      </div>
+      <div class="card-action center-align">
+        <a href="/stories/<%= val.id %>" class="btn grey">Read More</a>
+      </div>
+    </div>
+    <% })} else{ %>
+    <p>No stories to display</p>
+    <% }%>
+  </div>
+</div>
