@@ -10,57 +10,71 @@ const generator = require("generate-password");
 
 /* functions */
 //GET
-//************************************************************GET REGISTER
-const user_get_register = (req, res) => {
-  res.render("register", { layout: "layouts/layout" });
+//************************************************************GET  show REGISTER page  /register
+const user_GET_register = (req, res) => {
+  res.render("register", { layout: "layouts/guestLayout" });
 };
-//************************************************************GET LOGIN
-const user_get_login = (req, res) => {
-  res.render("login", { layout: "layouts/layout" });
+//************************************************************GET show-LOGIN-page  /login
+const user_GET_login = (req, res) => {
+  res.render("login", { layout: "layouts/guestLayout" });
 };
-//************************************************************GET LOGOUT
-const user_get_logout = (req, res) => {
+//************************************************************GET show-LOGOUT-page  /logout
+const user_GET_logout = (req, res) => {
   req.logout();
   req.flash("success_msg", "You are logged out");
   res.redirect("/");
 };
-//************************************************************GET find
-const user_get_find = (req, res) => {
+//************************************************************GET show-find-page  /find
+const user_GET_find = (req, res) => {
   res.render("find", {
-    layout: "layouts/layout",
+    layout: "layouts/guestLayout",
   });
 };
-//************************************************************GET findEmail
-const user_get_findEmail = (req, res) => {
+//************************************************************GET show-findEmail-page  /find/email
+const user_GET_findEmail = (req, res) => {
   res.render("findUser", {
-    layout: "layouts/layout",
+    layout: "layouts/guestLayout",
   });
 };
-//************************************************************GET finpw
-const user_get_findPw = (req, res) => {
+//************************************************************GET show-finPw-page  /find/pw
+const user_GET_findPw = (req, res) => {
   console.log("get: " + req.body.name);
   res.render("findPw", {
-    layout: "layouts/layout",
+    layout: "layouts/guestLayout",
   });
 };
-//************************************************************GET findpw email
-const user_get_findPw_email = (req, res) => {
+//************************************************************GET show-findPwEmail-page  /find/pw/email
+const user_GET_findPw_email = (req, res) => {
   res.render("findPwEmail", {
-    layout: "layouts/layout",
+    layout: "layouts/guestLayout",
   });
 };
-//************************************************************GET changepw
-const user_get_changePw = (req, res) => {
+//************************************************************GET show-changePw-page  /changePw
+const user_GET_changePw = (req, res) => {
   res.render("changePw", {
     layout: "layouts/userLayout",
-    userId: req.user.id,
-    logout: "/users/logout",
+    user: req.user,
   });
+};
+//************************************************************GET  show-delete-page  /delete
+const user_GET_delete = (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then((result) => {
+      res.render("delete", {
+        layout: "layouts/userLayout",
+        user: req.user,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 //POST
-//************************************************************POST REGISTER
-const user_post_register = (req, res) => {
+//************************************************************POST add-new-user  /register
+const user_POST_register = (req, res) => {
   const { firstName, lastName, email, password, password2 } = req.body;
 
   let errors = [];
@@ -81,7 +95,7 @@ const user_post_register = (req, res) => {
     console.log(firstName);
     res.render("register", {
       // if error occured, send errors and other varibles
-      layout: "layout",
+      layout: "layouts//guestLayout",
       errors,
       firstName,
       lastName,
@@ -133,14 +147,14 @@ const user_post_register = (req, res) => {
     });
   }
 };
-//************************************************************POST LOGIN
-const user_post_login = passport.authenticate("local", {
+//************************************************************POST LOGIN  /login
+const user_POST_login = passport.authenticate("local", {
   successRedirect: "/",
   failureRedirect: "/users/login",
   failureFlash: true,
 });
-//************************************************************POST findpw
-const user_post_findPw = (req, res) => {
+//************************************************************POST findpw  /find/pw
+const user_POST_findPw = (req, res) => {
   const user = req.body;
 
   User.findOne({ email: user.email }).then((user) => {
@@ -150,18 +164,18 @@ const user_post_findPw = (req, res) => {
       req.session.user = user.id;
       //req.session.save();
       res.render("findPwEmail", {
-        layout: "layouts/layout",
+        layout: "layouts/guestLayout",
       });
     } else {
       console.log("email does not exist");
       res.render("findPw", {
-        layout: "layouts/layout",
+        layout: "layouts/guestLayout",
       });
     }
   });
 };
-//************************************************************POST email
-const user_post_email = (req, res) => {
+//************************************************************POST  send-email  /find/pw/email
+const user_POST_email = (req, res) => {
   const recvEmail = req.body.email;
   const userId = req.session.user;
   console.log("send to " + recvEmail);
@@ -234,8 +248,8 @@ const user_post_email = (req, res) => {
     });
   });
 };
-//************************************************************POST change pw
-const user_post_changePw = (req, res) => {
+//************************************************************POST  update-PW  /changePw
+const user_POST_changePw = (req, res) => {
   const newPw1 = req.body.password;
   const newPw2 = req.body.password2;
   console.log(newPw1, newPw2);
@@ -272,25 +286,8 @@ const user_post_changePw = (req, res) => {
 };
 
 //DELETE
-//************************************************************DELETE user
-const user_delete_page = (req, res) => {
-  const id = req.params.id;
-
-  User.findById(id)
-    .then((result) => {
-      res.render("delete", {
-        layout: "layouts/userLayout",
-        userId: id,
-        logout: "/users/logout",
-      });
-    })
-    .catch((err) => {
-      console.log("sibal");
-      console.log(err);
-    });
-};
-//************************************************************DELETE LOGIN
-const user_delete_user = async (req, res) => {
+//************************************************************DELETE  delete-user  /delete/:id
+const user_DEL_user = async (req, res) => {
   console.log("im here");
   try {
     let user = await User.findById(req.params.id).lean();
@@ -316,29 +313,28 @@ const user_delete_user = async (req, res) => {
 
 /* Export module*/
 module.exports = {
-  user_get_register,
-  user_get_login,
-  user_get_logout,
-  user_post_register,
-  user_post_login,
-  user_delete_page,
-  user_delete_user,
-  user_get_find,
-  user_get_findEmail,
-  user_get_findPw,
-  user_post_findPw,
-  user_get_findPw_email,
-  user_post_email,
-  user_get_changePw,
-  user_post_changePw,
+  user_GET_register,
+  user_GET_login,
+  user_GET_logout,
+  user_POST_register,
+  user_POST_login,
+  user_GET_delete,
+  user_DEL_user,
+  user_GET_find,
+  user_GET_findEmail,
+  user_GET_findPw,
+  user_POST_findPw,
+  user_GET_findPw_email,
+  user_POST_email,
+  user_GET_changePw,
+  user_POST_changePw,
 };
 
 /*NOTES*************************************************************/
-//*otherway logout
+//*otherway TO logout
 // req.session.destroy((err) => {
 //   if (err) throw err;
 //   res.redirect("/");
 // });
 //*we are using flash msg instead of hsb because we are redirecting so we need to store at session
 //*not working, maybe passport version issue
-// successFlash: "Welcome!",

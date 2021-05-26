@@ -19,6 +19,7 @@ const MongoStore = require("connect-mongo")(session); //MongoStore (or RedisStor
 const passport = require("passport"); //authentication middleware
 const expressLayouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
+
 /* Load config */
 dotenv.config({ path: "./config/config.env" });
 

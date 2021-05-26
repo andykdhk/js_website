@@ -5,7 +5,7 @@
 const passport = require("passport");
 const User = require("../models/User");
 const Story = require("../models/Story");
-const helperEjs = require("../helpers/ejs");
+const helpers = require("../helpers/ejs");
 
 /* functions */
 //GET
@@ -14,23 +14,19 @@ const index_home = (req, res) => {
   /* before login */
   if (!req.isAuthenticated()) {
     res.render("home", {
-      layout: "layouts/layout",
-      welcomeMsg: "Nice to meet you",
-      userName: "guest",
-      userId: "",
+      layout: "layouts/guestLayout",
+      user: req.user,
     });
     /* after login */
   } else if (req.isAuthenticated()) {
     res.render("home", {
       layout: "layouts/userLayout",
-      welcomeMsg: "Welcome back!!",
-      userName: req.user.firstName,
-      userId: req.user.id,
-      logout: "/users/logout",
+      user: req.user,
     });
     /* Error */
   } else {
     console.log("error home page");
+    res.redirect("/");
   }
 };
 
@@ -38,32 +34,13 @@ const index_home = (req, res) => {
 const index_dashboard = async (req, res) => {
   try {
     const stories = await Story.find({ user: req.user.id }).lean();
-    console.log("this is story:", stories);
-    /* local login */
-    if (req.user.loginType === "local") {
-      res.render("dashboard", {
-        layout: "layouts/userLayout",
-        userName: req.user.firstName,
-        userId: req.user.id,
-        logout: "/users/logout",
-        helpers: helperEjs,
-        stories,
-      });
-      /* google login */
-    } else if (req.user.loginType === "google") {
-      res.render("dashboard", {
-        layout: "layouts/userLayout",
-        userName: req.user.firstName,
-        userId: req.user.id,
-        logout: "/auth/logout",
-        stories,
-      });
-    } else {
-      console.log("error dashboard ");
-      res.render("dashboard", {
-        name: req.user.firstName,
-      });
-    }
+    res.render("dashboard", {
+      layout: "layouts/userLayout",
+      user: req.user,
+      helpers,
+      stories,
+    });
+    /* Error */
   } catch (err) {
     console.error(err);
     res.render("error/500");

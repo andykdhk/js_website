@@ -1,8 +1,13 @@
-<h2>Dashboard</h2>
-<p>User:<%= userName %></p>
+<!-- dashboard.ejs -->
 
+<!-- welcome message -->
+<h2>Dashboard</h2>
+<p>User:<%= user.firstName %></p>
+
+<!-- display stories -->
+<!-- if users have story -->
 <% if(typeof stories == 'object' && stories.length > 0){%>
-<p>yes you do have stories</p>
+<p>yes, you do have stories</p>
 <table class="striped">
   <thead>
     <tr>
@@ -35,6 +40,7 @@
         </form>
       </td>
     </tr>
+    <!-- if users do not have story -->
     <% })} else{ %>
     <p>you have not created any stories</p>
     <% } %>
