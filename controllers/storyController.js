@@ -9,6 +9,16 @@ const Story = require("../models/Story");
 const helpers = require("../helpers/ejs");
 
 /* functions */
+//************************************************************GET  Show add page      /stories/add
+const story_get_add = (req, res) => {
+  console.log(
+    "hey;;---------------------------------------------------------------------------"
+  );
+  res.render("stories/add", {
+    layout: "layouts/userLayout",
+    user: req.user,
+  });
+};
 //************************************************************GET  Show public stories   /stories/
 const story_get_publicStory = async (req, res) => {
   try {
@@ -19,7 +29,7 @@ const story_get_publicStory = async (req, res) => {
     /* before login */
     if (!req.isAuthenticated()) {
       console.log("im here");
-      res.render("stories/index", {
+      res.render("stories/publicStory", {
         layout: "layouts/guestLayout",
         user: req.user,
         helpers,
@@ -27,7 +37,7 @@ const story_get_publicStory = async (req, res) => {
       });
       /* after login */
     } else if (req.isAuthenticated()) {
-      res.render("stories/index", {
+      res.render("stories/publicStory", {
         layout: "layouts/userLayout",
         user: req.user,
         helpers,
@@ -70,7 +80,7 @@ const story_get_showSingle = async (req, res) => {
     /* before login */
     if (!req.isAuthenticated()) {
       console.log("bef log");
-      res.render("stories/show", {
+      res.render("stories/singleStory", {
         layout: "layouts/guestLayout",
         user: req.user,
         helpers,
@@ -81,7 +91,7 @@ const story_get_showSingle = async (req, res) => {
       if (stories.user._id != req.user.id && stories.status == "private") {
         res.render("error/404");
       } else {
-        res.render("stories/show", {
+        res.render("stories/singleStory", {
           layout: "layouts/userLayout",
           user: req.user,
           helpers,
@@ -98,13 +108,7 @@ const story_get_showSingle = async (req, res) => {
     res.render("error/404");
   }
 };
-//************************************************************GET  Show add page      /stories/add
-const story_get_add = (req, res) => {
-  res.render("stories/add", {
-    layout: "layouts/userLayout",
-    user: req.user,
-  });
-};
+
 //************************************************************GET  Show edit page     /stories/eidt/:id
 const story_get_edit = async (req, res) => {
   try {
@@ -136,7 +140,7 @@ const story_post_add = async (req, res) => {
   try {
     req.body.user = req.user.id;
     await Story.create(req.body);
-    res.redirect("/dashboard");
+    res.redirect("/stories/dashboard");
   } catch (err) {
     console.error(err);
     res.render("error/500");
@@ -159,7 +163,7 @@ const story_put_update = async (req, res) => {
         runValidators: true,
       });
 
-      res.redirect("/dashboard");
+      res.redirect("/stories/dashboard");
     }
   } catch (err) {
     console.error(err);
@@ -179,7 +183,7 @@ const story_delete_story = async (req, res) => {
       res.redirect("/stories");
     } else {
       await Story.remove({ _id: req.params.id });
-      res.redirect("/dashboard");
+      res.redirect("/stories/dashboard");
     }
   } catch (err) {
     console.error(err);

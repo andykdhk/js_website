@@ -16,5 +16,6 @@ p {
   margin-left: 40%;
   margin-right: 40%;
 }
-.fixed-action-btn {
+.card-action {
+  position: center;
 }

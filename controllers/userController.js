@@ -12,11 +12,11 @@ const generator = require("generate-password");
 //GET
 //************************************************************GET  show REGISTER page  /register
 const user_GET_register = (req, res) => {
-  res.render("register", { layout: "layouts/guestLayout" });
+  res.render("users/register", { layout: "layouts/guestLayout" });
 };
 //************************************************************GET show-LOGIN-page  /login
 const user_GET_login = (req, res) => {
-  res.render("login", { layout: "layouts/guestLayout" });
+  res.render("users/login", { layout: "layouts/guestLayout" });
 };
 //************************************************************GET show-LOGOUT-page  /logout
 const user_GET_logout = (req, res) => {
@@ -26,32 +26,32 @@ const user_GET_logout = (req, res) => {
 };
 //************************************************************GET show-find-page  /find
 const user_GET_find = (req, res) => {
-  res.render("find", {
+  res.render("users/find", {
     layout: "layouts/guestLayout",
   });
 };
 //************************************************************GET show-findEmail-page  /find/email
 const user_GET_findEmail = (req, res) => {
-  res.render("findUser", {
+  res.render("users/findUser", {
     layout: "layouts/guestLayout",
   });
 };
 //************************************************************GET show-finPw-page  /find/pw
 const user_GET_findPw = (req, res) => {
   console.log("get: " + req.body.name);
-  res.render("findPw", {
+  res.render("users/findPw", {
     layout: "layouts/guestLayout",
   });
 };
 //************************************************************GET show-findPwEmail-page  /find/pw/email
 const user_GET_findPw_email = (req, res) => {
-  res.render("findPwEmail", {
+  res.render("users/findPwEmail", {
     layout: "layouts/guestLayout",
   });
 };
 //************************************************************GET show-changePw-page  /changePw
 const user_GET_changePw = (req, res) => {
-  res.render("changePw", {
+  res.render("users/changePw", {
     layout: "layouts/userLayout",
     user: req.user,
   });
@@ -62,7 +62,7 @@ const user_GET_delete = (req, res) => {
 
   User.findById(id)
     .then((result) => {
-      res.render("delete", {
+      res.render("users/delete", {
         layout: "layouts/userLayout",
         user: req.user,
       });
@@ -93,7 +93,7 @@ const user_POST_register = (req, res) => {
 
   if (errors.length > 0) {
     console.log(firstName);
-    res.render("register", {
+    res.render("users/register", {
       // if error occured, send errors and other varibles
       layout: "layouts//guestLayout",
       errors,
@@ -109,7 +109,7 @@ const user_POST_register = (req, res) => {
       //make sure user DNE// DB:CONST
       if (user) {
         errors.push({ msg: "Email already exists" });
-        res.render("register", {
+        res.render("users/register", {
           errors,
           firstName,
           lastName,
@@ -162,15 +162,13 @@ const user_POST_findPw = (req, res) => {
     if (user) {
       console.log("Email exists and id: " + user.id);
       req.session.user = user.id;
-      //req.session.save();
-      res.render("findPwEmail", {
+      res.render("users/findPwEmail", {
         layout: "layouts/guestLayout",
       });
     } else {
       console.log("email does not exist");
-      res.render("findPw", {
-        layout: "layouts/guestLayout",
-      });
+      req.flash("error_msg", "Email address does not exist");
+      res.redirect("/users/find/pw");
     }
   });
 };
@@ -214,7 +212,7 @@ const user_POST_email = (req, res) => {
     }
     console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // req.flash("success_msg", "Email has been sent");
+    req.flash("success_msg", "Email has been sent");
     /*********************************************************************************************** */
     //update pw
 
@@ -238,7 +236,7 @@ const user_POST_email = (req, res) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  res.redirect("/users/login");
+                  res.redirect("/users/find/pw/email");
                 }
               }
             );
