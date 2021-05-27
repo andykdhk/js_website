@@ -9,7 +9,7 @@ const helpers = require("../helpers/ejs");
 
 /* functions */
 //GET
-//************************************************************GET HOME
+//************************************************************GET  show-HOME-page  /
 const index_home = (req, res) => {
   /* before login */
   if (!req.isAuthenticated()) {
@@ -30,25 +30,7 @@ const index_home = (req, res) => {
   }
 };
 
-//************************************************************GET DASHBOARD
-const index_dashboard = async (req, res) => {
-  try {
-    const stories = await Story.find({ user: req.user.id }).lean();
-    res.render("dashboard", {
-      layout: "layouts/userLayout",
-      user: req.user,
-      helpers,
-      stories,
-    });
-    /* Error */
-  } catch (err) {
-    console.error(err);
-    res.render("error/500");
-  }
-};
-
 /* Export module*/
 module.exports = {
   index_home,
-  index_dashboard,
 };

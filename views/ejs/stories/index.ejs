@@ -1,13 +1,22 @@
+<!-- index.ejs -->
+
 <h1>Stories</h1>
 <div class="row">
+  <!-- if there are any stories -->
   <% if(typeof stories == 'object' && stories.length > 0){%>
   <p>yes you do have stories</p>
+  <!-- loop through each stories -->
   <% stories.forEach(function(val){ %>
+  <!-- display stories ----------------------------------------------------------->
   <div class="col s12 m4">
     <div class="card">
       <div class="card-image">
-        <%- helpers.editIcon(val.user,user,val._id) %>
+        <!-- if user logged in -->
+        <% if (user){%> <%- helpers.editIcon(val.user,user,val._id) %>
+        <!-- else guest  -->
+        <%} else { } %>
       </div>
+
       <div class="card-content center-align">
         <h5><%= val.title %></h5>
         <p><%= helpers.stripTags(helpers.truncate( val.body, 50)) %></p>
@@ -22,6 +31,8 @@
       </div>
     </div>
   </div>
+  <!-- display stories ----------------------------------------------------------->
+  <!-- else no stories  -->
   <% })} else{ %>
   <p>No stories to display</p>
   <% }%>

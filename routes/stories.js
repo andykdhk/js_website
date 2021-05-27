@@ -11,10 +11,11 @@ const storyController = require("../controllers/storyController");
 
 /* routers */
 //GET
-router.get("/add", ensureAuthenticated, storyController.story_get_add);
-router.get("/", ensureAuthenticated, storyController.story_get_showAll);
-router.get("/:id", ensureAuthenticated, storyController.story_get_showSingle);
+router.get("/", storyController.story_get_publicStory);
+router.get("/dashboard", storyController.story_get_dashboard);
+router.get("/:id", storyController.story_get_showSingle);
 router.get("/edit/:id", ensureAuthenticated, storyController.story_get_edit);
+router.get("/add", ensureAuthenticated, storyController.story_get_add);
 
 //POST
 router.post("/", ensureAuthenticated, storyController.story_post_add);

@@ -10,7 +10,6 @@ const indexController = require("../controllers/indexController");
 /* routers */
 //GET
 router.get("/", indexController.index_home); //home
-router.get("/dashboard", ensureAuthenticated, indexController.index_dashboard);
 
 /* Export module*/
 module.exports = router;
