@@ -57,7 +57,7 @@ const story_get_publicStory = async (req, res) => {
 const story_get_dashboard = async (req, res) => {
   try {
     const stories = await Story.find({ user: req.user.id }).lean();
-    res.render("stories/dashboard", {
+    res.render("stories/s", {
       layout: "layouts/userLayout",
       user: req.user,
       helpers,
@@ -112,22 +112,22 @@ const story_get_showSingle = async (req, res) => {
 //************************************************************GET  Show edit page     /stories/eidt/:id
 const story_get_edit = async (req, res) => {
   try {
-    const story = await Story.findOne({
+    const stories = await Story.findOne({
       _id: req.params.id,
     }).lean();
 
-    if (!story) {
+    if (!stories) {
       return res.render("error/404");
     }
 
-    if (story.user != req.user.id) {
+    if (stories.user != req.user.id) {
       res.redirect("/stories");
     } else {
       res.render("stories/edit", {
         layout: "layouts/userLayout",
         user: req.user,
-        helpers: helperEjs,
-        stories: story,
+        helpers,
+        stories,
       });
     }
   } catch (err) {
