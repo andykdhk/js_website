@@ -1,48 +1,17 @@
-<!-- dashboard.ejs -->
+<!-- show limit menu---------------------------------------------------------------------show limit menu -->
+<div id="limitMenu"><%- include('../partials/dashboard/limitMenu.ejs') %></div>
 
-<!-- welcome message -->
-<h2>Dashboard</h2>
-<p>User:<%= user.firstName %></p>
-
-<!-- display stories -->
 <!-- if users have story -->
 <% if(typeof stories == 'object' && stories.length > 0){%>
 <p>yes, you do have stories</p>
-<table class="striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Date</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% stories.forEach(function(val){ %>
-    <tr>
-      <td>
-        <a href="/stories/<%= val._id %>"><%= val.title %></a>
-      </td>
 
-      <td><%= helpers.formatDate(val.createdAt) %></td>
-      <td>
-        <span class="dash-status"><%= val.status %></span>
-      </td>
-      <td>
-        <a href="/stories/edit/<%= val._id %>" class="btn btn-float">
-          <i class="fas fa-edit"></i>
-        </a>
+<!-- show posts---------------------------------------------------------------------------show posts -->
+<div id="content"><%- include('../partials/dashboard/contents.ejs') %></div>
 
-        <form action="/stories/<%= val._id %>" method="POST" id="delete-form">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="btn red">
-            <i class="fas fa-trash"></i>
-          </button>
-        </form>
-      </td>
-    </tr>
-    <!-- if users do not have story -->
-    <% })} else{ %>
-    <p>you have not created any stories</p>
-    <% } %>
-  </tbody>
-</table>
+<!-- else then no story -->
+<%} else{ %>
+<p>you have not created any stories</p>
+<% } %>
+
+<!--show pagination-----------------------------------------------------------------------show pagination-->
+<div id="pgnation"><%- include('../partials/dashboard/pgnation.ejs') %></div>

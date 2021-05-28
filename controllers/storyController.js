@@ -57,7 +57,7 @@ const story_get_publicStory = async (req, res) => {
 const story_get_dashboard = async (req, res) => {
   try {
     const stories = await Story.find({ user: req.user.id }).lean();
-    res.render("stories/s", {
+    res.render("stories/dashboard", {
       layout: "layouts/userLayout",
       user: req.user,
       helpers,
