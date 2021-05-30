@@ -14,6 +14,7 @@ const storyController = require("../controllers/storyController");
 router.get("/add", ensureAuthenticated, storyController.story_get_add);
 router.get("/", storyController.story_get_publicStory);
 router.get("/dashboard", storyController.story_get_dashboard);
+
 router.get("/:id", storyController.story_get_showSingle);
 router.get("/edit/:id", ensureAuthenticated, storyController.story_get_edit);
 

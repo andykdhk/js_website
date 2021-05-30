@@ -1,5 +1,5 @@
 <!-- dropdown menu---------------------------------------------------------------------dropdown menu-->
-<% var postNum= 45; %>
+
 <div class="dropdown float-end">
   <button
     class="btn btn-secondary dropdown-toggle"
@@ -13,14 +13,13 @@
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <li>
-      <a id="first" class="dropdown-item active" href="#">5 posts </a>
+      <a id="first" class="dropdown-item active" href="?limit=5">5 posts </a>
     </li>
     <li>
-      <a id="sec" class="dropdown-item" href="#">10 posts </a>
+      <a id="sec" class="dropdown-item" href="?limit=10">10 posts </a>
     </li>
     <li>
-      <a id="th" class="dropdown-item" href="#">25 posts </a>
+      <a id="th" class="dropdown-item" href="?limit=25">25 posts </a>
     </li>
   </ul>
 </div>
-<h3><%= postNum %></h3>

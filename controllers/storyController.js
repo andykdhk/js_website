@@ -55,20 +55,45 @@ const story_get_publicStory = async (req, res) => {
 };
 //************************************************************GET  show-DASHBOARD-page  /stories/dashboard
 const story_get_dashboard = async (req, res) => {
+  const page = +req.query.page || 1; // pagination
+  const ITEMS_PER_PAGE = +req.query.limit || 5; // pagination
+
   try {
     const stories = await Story.find({ user: req.user.id }).lean();
-    res.render("stories/dashboard", {
-      layout: "layouts/userLayout",
-      user: req.user,
-      helpers,
-      stories,
-    });
+    // start constants
+
+    // end constants
+    Story.find({ user: req.user.id })
+      .countDocuments()
+      .then((numberOfProducts) => {
+        totalItems = numberOfProducts;
+        return Story.find()
+          .skip((page - 1) * ITEMS_PER_PAGE)
+          .limit(ITEMS_PER_PAGE);
+      })
+      .then((story2) => {
+        res.render("stories/dashboard", {
+          layout: "layouts/userLayout",
+          user: req.user,
+          helpers,
+          stories: story2,
+          currentPage: page,
+          hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+          hasPreviousPage: page > 1,
+          nextPage: page + 1,
+          previousPage: page - 1,
+          lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+          limit: ITEMS_PER_PAGE,
+        });
+      });
+
     /* Error */
   } catch (err) {
     console.error(err);
     res.render("error/500");
   }
 };
+
 //************************************************************GET  Show single story  /stories/:id
 const story_get_showSingle = async (req, res) => {
   try {
@@ -217,6 +242,7 @@ module.exports = {
   story_get_showSingle,
   story_get_edit,
   story_get_dashboard,
+
   story_post_add,
   story_put_update,
   story_delete_story,
