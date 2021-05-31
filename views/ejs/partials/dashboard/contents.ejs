@@ -17,9 +17,7 @@
             <%= val.title %>
             <small class="story-status float-end"><%= val.status %></small>
           </h5>
-        </div>
-
-        <div class="story_time float-end">
+          <p class="float-end">Views: <%= val.views %></p>
           <small>[<%= helpers.formatDate(val.createdAt) %>] </small>
         </div>
       </a>

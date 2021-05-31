@@ -12,7 +12,11 @@
   >
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"><%= val.title %></h5>
-      <small><%= helpers.formatDate(val.createdAt) %></small>
+
+      <small
+        ><%= helpers.formatDate(val.createdAt) %>
+        <p>Views: <%= val.views %></p></small
+      >
     </div>
     <p class="mb-1">
       <%= helpers.stripTags(helpers.truncate( val.body, 150)) %>

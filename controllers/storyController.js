@@ -7,13 +7,13 @@ const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth"); //preventing user from entering page without login
 const Story = require("../models/Story");
 const helpers = require("../helpers/ejs");
+const { UserRefreshClient } = require("google-auth-library");
 
 /* functions */
 //************************************************************GET  Show add page      /stories/add
 const story_get_add = (req, res) => {
-  console.log(
-    "hey;;---------------------------------------------------------------------------"
-  );
+  var totalStory = Story.find().countDocuments();
+
   res.render("stories/add", {
     layout: "layouts/userLayout",
     user: req.user,
@@ -98,13 +98,18 @@ const story_get_dashboard = async (req, res) => {
 const story_get_showSingle = async (req, res) => {
   try {
     let stories = await Story.findById(req.params.id).populate("user").lean();
-
     if (!stories) {
       return res.render("error/404");
     }
+
     /* before login */
     if (!req.isAuthenticated()) {
-      console.log("bef log");
+      /*count views for guest */
+      stories = await Story.findOneAndUpdate(
+        { _id: req.params.id },
+        { views: ++stories.views },
+        { returnOriginal: false }
+      );
       res.render("stories/singleStory", {
         layout: "layouts/guestLayout",
         user: req.user,
@@ -113,6 +118,14 @@ const story_get_showSingle = async (req, res) => {
       });
       /* after login */
     } else if (req.isAuthenticated()) {
+      /*count views for user */ // visit will not count own views
+      if (req.user._id.toString() !== stories.user._id.toString()) {
+        stories = await Story.findOneAndUpdate(
+          { _id: req.params.id },
+          { views: ++stories.views },
+          { returnOriginal: false }
+        );
+      }
       if (stories.user._id != req.user.id && stories.status == "private") {
         res.render("error/404");
       } else {

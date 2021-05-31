@@ -19,6 +19,14 @@ const StorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  views: {
+    type: Number,
+    default: 0,
+  },
+  // storyNumber: {
+  //   type: Number,
+  //   required: true,
+  // },
   createdAt: {
     type: Date,
     default: Date.now,
