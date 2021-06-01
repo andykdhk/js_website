@@ -1,8 +1,11 @@
 <!--show pagination-----------------------------------------------------------------------show pagination-->
 <div id="pgnation"><%- include('../partials/dashboard/pgnation.ejs') %></div>
 
-<!-- show limit menu---------------------------------------------------------------------show limit menu -->
-<div id="limitMenu"><%- include('../partials/dashboard/limitMenu.ejs') %></div>
+<!-- show menu---------------------------------------------------------------------show limit menu -->
+<div id="Menu">
+  <%- include('../partials/dashboard/limitMenu.ejs') %> <%-
+  include('../partials/dashboard/sortMenu.ejs') %>
+</div>
 
 <!-- if users have story -->
 <% if(typeof stories == 'object' && stories.length > 0){%>
@@ -10,13 +13,6 @@
 
 <!-- show posts---------------------------------------------------------------------------show posts -->
 <div id="content"><%- include('../partials/dashboard/contents.ejs') %></div>
-
-<h5>hasPreviousPage: <%=hasPreviousPage%></h5>
-<h5>hasNextPage: <%=hasNextPage%></h5>
-<h5>previousPage: <%=previousPage%></h5>
-<h5>currentPage: <%=currentPage%></h5>
-<h5>nextPage: <%=nextPage%></h5>
-<h5>lastPage: <%=lastPage%></h5>
 
 <!-- else then no story -->
 <%} else{ %>

@@ -23,10 +23,10 @@ const StorySchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  // storyNumber: {
-  //   type: Number,
-  //   required: true,
-  // },
+  storyNumber: {
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

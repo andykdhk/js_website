@@ -5,23 +5,31 @@
 <p>yes you do have stories</p>
 <div class="list-group">
   <!-- loop through each stories -->
+  <% var countStory =0; %>
+  <!-- sd -->
   <% stories.forEach(function(val){ %>
+  <!-- sd -->
+
   <a
     href="/stories/<%= val._id %>"
     class="list-group-item list-group-item-action flex-column align-items-start"
   >
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1"><%= val.title %></h5>
+      <h5 class="mb-1 me-auto"><%= val.title %></h5>
 
       <small
-        ><%= helpers.formatDate(val.createdAt) %>
-        <p>Views: <%= val.views %></p></small
+        ><P>Number:<%= totalStory %></P>
+        <%= helpers.formatDate(val.createdAt) %>
+        <p>Views: <%= val.views %></p>
+        <p><%= val.user.firstName %></p></small
       >
     </div>
     <p class="mb-1">
       <%= helpers.stripTags(helpers.truncate( val.body, 150)) %>
     </p>
   </a>
+  <% totalStory--;%>
+  <!-- decrease story Number  -->
   <% }) %>
 </div>
 <!-- if no stories -->

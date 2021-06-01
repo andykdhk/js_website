@@ -21,6 +21,8 @@ const story_get_add = (req, res) => {
 };
 //************************************************************GET  Show public stories   /stories/
 const story_get_publicStory = async (req, res) => {
+  var totalStory = await Story.find({ status: "public" }).countDocuments();
+
   try {
     const stories = await Story.find({ status: "public" })
       .populate("user")
@@ -34,6 +36,7 @@ const story_get_publicStory = async (req, res) => {
         user: req.user,
         helpers,
         stories,
+        totalStory,
       });
       /* after login */
     } else if (req.isAuthenticated()) {
@@ -42,6 +45,7 @@ const story_get_publicStory = async (req, res) => {
         user: req.user,
         helpers,
         stories,
+        totalStory,
       });
       /* Error */
     } else {
@@ -57,17 +61,24 @@ const story_get_publicStory = async (req, res) => {
 const story_get_dashboard = async (req, res) => {
   const page = +req.query.page || 1; // pagination
   const ITEMS_PER_PAGE = +req.query.limit || 5; // pagination
+  let countStory = 0;
 
   try {
     const stories = await Story.find({ user: req.user.id }).lean();
-    // start constants
 
-    // end constants
+    stories.forEach(async function (val) {
+      await Story.findOneAndUpdate(
+        { _id: val._id },
+        { storyNumber: ++countStory },
+        { returnOriginal: false }
+      );
+    });
+
     Story.find({ user: req.user.id })
       .countDocuments()
       .then((numberOfProducts) => {
         totalItems = numberOfProducts;
-        return Story.find()
+        return Story.find({ user: req.user.id })
           .skip((page - 1) * ITEMS_PER_PAGE)
           .limit(ITEMS_PER_PAGE);
       })
@@ -84,6 +95,7 @@ const story_get_dashboard = async (req, res) => {
           previousPage: page - 1,
           lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
           limit: ITEMS_PER_PAGE,
+          totalItems,
         });
       });
 
@@ -110,6 +122,7 @@ const story_get_showSingle = async (req, res) => {
         { views: ++stories.views },
         { returnOriginal: false }
       );
+
       res.render("stories/singleStory", {
         layout: "layouts/guestLayout",
         user: req.user,
@@ -175,8 +188,10 @@ const story_get_edit = async (req, res) => {
 };
 //************************************************************POST  Process add form  /stories/
 const story_post_add = async (req, res) => {
+  let total = await Story.find({ user: req.user.id }).countDocuments();
   try {
-    req.body.user = req.user.id;
+    req.body.storyNumber = total++;
+    req.body.user = req.user.id; //add story user id
     await Story.create(req.body);
     res.redirect("/stories/dashboard");
   } catch (err) {

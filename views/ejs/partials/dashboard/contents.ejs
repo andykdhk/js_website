@@ -1,9 +1,11 @@
 <!-- show posts-------------------------------------------------------------------------show posts -->
+
+
 <div class="row">
   <div class="col-4">
     <div class="list-group" id="list-tab" role="tablist">
       <% stories.forEach(function(val){ %>
-
+       
       <a
         class="list-group-item list-group-item-action"
         id="list-<%= val.title %>-list"
@@ -17,11 +19,11 @@
             <%= val.title %>
             <small class="story-status float-end"><%= val.status %></small>
           </h5>
-          <p class="float-end">Views: <%= val.views %></p>
+          <p class="float-end"><P>Number:<%= val.storyNumber %></P>Views: <%= val.views %></p>
           <small>[<%= helpers.formatDate(val.createdAt) %>] </small>
         </div>
       </a>
-
+     
       <% }) %>
     </div>
   </div>
