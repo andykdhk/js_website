@@ -13,23 +13,37 @@
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <li>
-      <a id="first" class="dropdown-item" href="#">Number Ascending</a>
-    </li>
-    <li>
-      <a id="sec" class="dropdown-item" href="#">Number descending </a>
-    </li>
-    <li>
-      <a id="th" class="dropdown-item" href="#">Views Ascending</a>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=views_asc&limit=<%= limit %>"
+        >Views Ascending</a
+      >
     </li>
 
     <li>
-      <a id="th" class="dropdown-item" href="#">Views descending</a>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=views_dsc&limit=<%= limit %>"
+        >Views Descending</a
+      >
     </li>
     <li>
-      <a id="th" class="dropdown-item" href="#">Dates Ascending </a>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=dates_asc&limit=<%= limit %>"
+        >Dates Ascending
+      </a>
     </li>
     <li>
-      <a id="th" class="dropdown-item" href="#">Dates descending </a>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=dates_dsc&limit=<%= limit %>"
+        >Dates Descending
+      </a>
     </li>
   </ul>
 </div>

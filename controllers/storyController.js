@@ -61,6 +61,18 @@ const story_get_publicStory = async (req, res) => {
 const story_get_dashboard = async (req, res) => {
   const page = +req.query.page || 1; // pagination
   const ITEMS_PER_PAGE = +req.query.limit || 5; // pagination
+  const SORT = req.query.sort || 1; //sort menu
+  let order;
+  if (SORT === "views_asc") {
+    order = { views: 1, createdAt: 1 };
+  } else if (SORT === "views_dsc") {
+    order = { views: -1, createdAt: 1 };
+  } else if (SORT === "dates_asc") {
+    order = { createdAt: 1, views: 1 };
+  } else if (SORT === "dates_dsc") {
+    order = { createdAt: -1, views: 1 };
+  }
+
   let countStory = 0;
 
   try {
@@ -79,6 +91,7 @@ const story_get_dashboard = async (req, res) => {
       .then((numberOfProducts) => {
         totalItems = numberOfProducts;
         return Story.find({ user: req.user.id })
+          .sort(order)
           .skip((page - 1) * ITEMS_PER_PAGE)
           .limit(ITEMS_PER_PAGE);
       })
@@ -96,6 +109,7 @@ const story_get_dashboard = async (req, res) => {
           lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
           limit: ITEMS_PER_PAGE,
           totalItems,
+          sort: SORT,
         });
       });
 

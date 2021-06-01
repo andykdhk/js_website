@@ -5,64 +5,88 @@
     <!-- if currentPage == 1 && no more page-->
     <% if (!hasPreviousPage && !hasNextPage) { %>
     <li class="page-item active">
-      <a class="page-link" href="?page=<%= currentPage %>&limit=<%= limit %>"
+      <a
+        class="page-link"
+        href="?page=<%= currentPage %>&limit=<%= limit %>&sort=<%= sort %>"
         ><%= currentPage %></a
       >
     </li>
     <!-- if currentPage == 1 &&  more pages-->
     <% } else if(!hasPreviousPage && hasNextPage){%>
     <li class="page-item active">
-      <a class="page-link" href="?page=<%= currentPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= currentPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= currentPage %></a
       >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= nextPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= nextPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= nextPage %></a
       >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= lastPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= lastPage %>&limit=<%= limit%>&sort=<%= sort %>"
         >Last</a
       >
     </li>
     <!-- if currentPage > 1 &&  NO more pages-->
     <% } else if(hasPreviousPage && !hasNextPage){%>
     <li class="page-item">
-      <a class="page-link" href="?page=1 %>&limit=<%= limit %>">First</a>
+      <a class="page-link" href="?page=1 %>&limit=<%= limit %>&sort=<%= sort %>"
+        >First</a
+      >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= previousPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= previousPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= previousPage %></a
       >
     </li>
     <li class="page-item active">
-      <a class="page-link" href="?page=<%= currentPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= currentPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= currentPage %></a
       >
     </li>
     <!-- if currentPage > 1 &&  more pages-->
     <% } else if(hasPreviousPage && hasNextPage){%>
     <li class="page-item">
-      <a class="page-link" href="?page=1 %>&limit=<%= limit %>">First</a>
+      <a class="page-link" href="?page=1 %>&limit=<%= limit %>&sort=<%= sort %>"
+        >First</a
+      >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= previousPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= previousPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= previousPage %></a
       >
     </li>
     <li class="page-item active">
-      <a class="page-link" href="?page=<%= currentPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= currentPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= currentPage %></a
       >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= nextPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= nextPage %>&limit=<%= limit%>&sort=<%= sort %>"
         ><%= nextPage %></a
       >
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page=<%= lastPage %>&limit=<%= limit%>"
+      <a
+        class="page-link"
+        href="?page=<%= lastPage %>&limit=<%= limit%>&sort=<%= sort %>"
         >Last</a
       >
     </li>
