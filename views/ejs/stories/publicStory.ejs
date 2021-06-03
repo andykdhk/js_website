@@ -1,11 +1,18 @@
 <!-- index.ejs -->
-<h>Stories</h>
+<h>Public Stories</h>
+<!--show pagination-----------------------------------------------------------------------show pagination-->
+<div id="pgnation"><%- include('../partials/dashboard/pgnation.ejs') %></div>
+<!-- show menu---------------------------------------------------------------------show limit menu -->
+<div id="Menu">
+  <%- include('../partials/dashboard/limitMenu.ejs') %> <%-
+  include('../partials/dashboard/sortMenu.ejs') %>
+</div>
 <!-- if there are stories -->
 <% if(typeof stories == 'object' && stories.length > 0){%>
 <p>yes you do have stories</p>
 <div class="list-group">
   <!-- loop through each stories -->
-  <% var countStory =0; %>
+
   <!-- sd -->
   <% stories.forEach(function(val){ %>
   <!-- sd -->
@@ -18,7 +25,7 @@
       <h5 class="mb-1 me-auto"><%= val.title %></h5>
 
       <small
-        ><P>Number:<%= totalStory %></P>
+        ><P>Number:<%= val.storyNumber %></P>
         <%= helpers.formatDate(val.createdAt) %>
         <p>Views: <%= val.views %></p>
         <p><%= val.user.firstName %></p></small
@@ -28,7 +35,7 @@
       <%= helpers.stripTags(helpers.truncate( val.body, 150)) %>
     </p>
   </a>
-  <% totalStory--;%>
+
   <!-- decrease story Number  -->
   <% }) %>
 </div>

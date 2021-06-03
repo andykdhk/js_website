@@ -5,7 +5,9 @@
 const express = require("express");
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth"); //preventing user from entering page without login
+const User = require("../models/User");
 const Story = require("../models/Story");
+const Comment = require("../models/Comment");
 const helpers = require("../helpers/ejs");
 const { UserRefreshClient } = require("google-auth-library");
 
@@ -21,37 +23,82 @@ const story_get_add = (req, res) => {
 };
 //************************************************************GET  Show public stories   /stories/
 const story_get_publicStory = async (req, res) => {
-  var totalStory = await Story.find({ status: "public" }).countDocuments();
+  const page = +req.query.page || 1; // pagination
+  const ITEMS_PER_PAGE = +req.query.limit || 5; // pagination
+  const SORT = req.query.sort || 1; //sort menu
+  let order;
+  if (SORT === "views_asc") {
+    order = { views: 1, createdAt: 1 };
+  } else if (SORT === "views_dsc") {
+    order = { views: -1, createdAt: 1 };
+  } else if (SORT === "dates_asc") {
+    order = { createdAt: 1, views: 1 };
+  } else if (SORT === "dates_dsc") {
+    order = { createdAt: -1, views: 1 };
+  }
+
+  let countStory = 0;
 
   try {
-    const stories = await Story.find({ status: "public" })
-      .populate("user")
-      .sort({ createdAt: "desc" })
-      .lean();
-    /* before login */
-    if (!req.isAuthenticated()) {
-      console.log("im here");
-      res.render("stories/publicStory", {
-        layout: "layouts/guestLayout",
-        user: req.user,
-        helpers,
-        stories,
-        totalStory,
+    const stories = await Story.find({ status: "public" }).lean();
+
+    stories.forEach(async function (val) {
+      await Story.findOneAndUpdate(
+        { _id: val._id },
+        { storyNumber: ++countStory },
+        { returnOriginal: false }
+      );
+    });
+
+    Story.find({ status: "public" })
+      .countDocuments()
+      .then((numberOfProducts) => {
+        totalItems = numberOfProducts;
+        return Story.find({ status: "public" })
+          .sort(order)
+          .skip((page - 1) * ITEMS_PER_PAGE)
+          .limit(ITEMS_PER_PAGE);
+      })
+      .then((story2) => {
+        if (!req.isAuthenticated()) {
+          res.render("stories/publicStory", {
+            layout: "layouts/guestLayout",
+            user: req.user,
+            helpers,
+            stories: story2,
+            currentPage: page,
+            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            limit: ITEMS_PER_PAGE,
+            totalItems,
+            sort: SORT,
+          });
+          /* after login */
+        } else if (req.isAuthenticated()) {
+          res.render("stories/publicStory", {
+            layout: "layouts/userLayout",
+            user: req.user,
+            helpers,
+            stories: story2,
+            currentPage: page,
+            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            limit: ITEMS_PER_PAGE,
+            totalItems,
+            sort: SORT,
+          });
+          /* Error */
+        } else {
+          console.log("error home page");
+          res.redirect("/");
+        }
       });
-      /* after login */
-    } else if (req.isAuthenticated()) {
-      res.render("stories/publicStory", {
-        layout: "layouts/userLayout",
-        user: req.user,
-        helpers,
-        stories,
-        totalStory,
-      });
-      /* Error */
-    } else {
-      console.log("error home page");
-      res.redirect("/");
-    }
   } catch (err) {
     console.error(err);
     res.render("error/500");
@@ -124,6 +171,10 @@ const story_get_dashboard = async (req, res) => {
 const story_get_showSingle = async (req, res) => {
   try {
     let stories = await Story.findById(req.params.id).populate("user").lean();
+    let comments = await Comment.find({ post: stories._id })
+      .populate("user")
+      .lean();
+
     if (!stories) {
       return res.render("error/404");
     }
@@ -142,6 +193,7 @@ const story_get_showSingle = async (req, res) => {
         user: req.user,
         helpers,
         stories,
+        comments,
       });
       /* after login */
     } else if (req.isAuthenticated()) {
@@ -161,6 +213,7 @@ const story_get_showSingle = async (req, res) => {
           user: req.user,
           helpers,
           stories,
+          comments,
         });
       }
       /* Error */
@@ -202,12 +255,27 @@ const story_get_edit = async (req, res) => {
 };
 //************************************************************POST  Process add form  /stories/
 const story_post_add = async (req, res) => {
+  // console.log(req.body);
   let total = await Story.find({ user: req.user.id }).countDocuments();
   try {
     req.body.storyNumber = total++;
     req.body.user = req.user.id; //add story user id
     await Story.create(req.body);
     res.redirect("/stories/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.render("error/500");
+  }
+};
+//************************************************************POST  Process add form  /stories/
+const story_post_comment = async (req, res) => {
+  //req.body.text = JSON.stringify(req.body);
+  req.body.post = req.params.id;
+  req.body.user = req.user.id;
+
+  try {
+    await Comment.create(req.body);
+    //res.redirect("/stories/singleStory");
   } catch (err) {
     console.error(err);
     res.render("error/500");
@@ -284,7 +352,7 @@ module.exports = {
   story_get_showSingle,
   story_get_edit,
   story_get_dashboard,
-
+  story_post_comment,
   story_post_add,
   story_put_update,
   story_delete_story,
