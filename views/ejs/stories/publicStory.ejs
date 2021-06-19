@@ -1,0 +1,46 @@
+<!-- index.ejs -->
+<h>Public Stories</h>
+
+<!--display pagination--------------------------------------------------------------------------------pagination-->
+<div id="pgnation"><%- include('../partials/pgnation.ejs') %></div>
+<!--display limitMenu----------------------------------------------------------------------------------limitMenu-->
+<div id="Menu">
+  <%- include('../partials/limitMenu.ejs') %> <%-
+  include('../partials/sortMenu.ejs') %>
+</div>
+
+<!-- if -->
+<!--user have story -->
+<% if(typeof stories == 'object' && stories.length > 0){%>
+<p>yes you do have stories</p>
+<div class="list-group">
+  <!-- loop through each stories -->
+  <% stories.forEach(function(val){ %>
+  <!--display posts---------------------------------------------------------------------------------------posts-->
+  <a
+    href="/stories/<%= val._id %>"
+    class="list-group-item list-group-item-action flex-column align-items-start"
+  >
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1 me-auto"><%= val.title %></h5>
+
+      <small
+        ><P>Number:<%= val.storyNumber %></P>
+        <%= helpers.formatDate(val.createdAt) %>
+        <p>Views: <%= val.views %></p>
+        <p><%= val.user.firstName %></p></small
+      >
+    </div>
+    <p class="mb-1">
+      <%= helpers.stripTags(helpers.truncate( val.body, 150)) %>
+    </p>
+  </a>
+  <!--display posts---------------------------------------------------------------------------------------posts-->
+  <% }) %>
+</div>
+
+<!-- else -->
+<!--then no story -->
+<%} else { %>
+<p>No stories to display</p>
+<% } %>

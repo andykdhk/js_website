@@ -1,0 +1,22 @@
+<!--display pagination--------------------------------------------------------------------------------pagination-->
+<div id="pgnation"><%- include('../partials/pgnation.ejs') %></div>
+
+<!--display limitMenu----------------------------------------------------------------------------------limitMenu-->
+<div id="Menu">
+  <%- include('../partials/limitMenu.ejs') %> <%-
+  include('../partials/sortMenu.ejs') %>
+</div>
+
+<!-- if -->
+<!--user have story -->
+<% if(typeof stories == 'object' && stories.length > 0){%>
+<p>yes, you do have stories</p>
+
+<!--display posts---------------------------------------------------------------------------------------contents-->
+<div id="content"><%- include('../stories/dashboard/contents.ejs') %></div>
+
+<!-- else -->
+<!--then no story -->
+<%} else{ %>
+<p>you have not created any stories</p>
+<% } %>

@@ -1,0 +1,49 @@
+<!-- dropdown menu---------------------------------------------------------------------dropdown menu-->
+
+<div class="dropdown float-end">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton1"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Sort
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=views_asc&limit=<%= limit %>"
+        >Views Ascending</a
+      >
+    </li>
+
+    <li>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=views_dsc&limit=<%= limit %>"
+        >Views Descending</a
+      >
+    </li>
+    <li>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=dates_asc&limit=<%= limit %>"
+        >Dates Ascending
+      </a>
+    </li>
+    <li>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&sort=dates_dsc&limit=<%= limit %>"
+        >Dates Descending
+      </a>
+    </li>
+  </ul>
+</div>

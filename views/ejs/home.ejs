@@ -1,0 +1,11 @@
+<!-- home.ejs -->
+
+<!-- if user logged in -->
+<% if (user){%>
+<p>Welcome back</p>
+<p>User:<%= user.firstName %></p>
+<!-- else guest  -->
+<%} else {%>
+<p>Nice to meet you</p>
+<p>User: Guest</p>
+<%} %>

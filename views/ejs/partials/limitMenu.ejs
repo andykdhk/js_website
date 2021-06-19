@@ -1,0 +1,40 @@
+<!-- dropdown menu---------------------------------------------------------------------dropdown menu-->
+
+<div class="dropdown float-end">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton1"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Show Limit
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li>
+      <a
+        id="first"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&limit=5&sort=<%= sort %>"
+        >5 posts
+      </a>
+    </li>
+    <li>
+      <a
+        id="sec"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&limit=10&sort=<%= sort %>"
+        >10 posts
+      </a>
+    </li>
+    <li>
+      <a
+        id="th"
+        class="dropdown-item"
+        href="?page=<%= currentPage %>&limit=25&sort=<%= sort %>"
+        >25 posts
+      </a>
+    </li>
+  </ul>
+</div>
