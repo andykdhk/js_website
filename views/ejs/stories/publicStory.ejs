@@ -1,22 +1,22 @@
 <!-- index.ejs -->
 <h>Public Stories</h>
-<!--show pagination-----------------------------------------------------------------------show pagination-->
-<div id="pgnation"><%- include('../partials/dashboard/pgnation.ejs') %></div>
-<!-- show menu---------------------------------------------------------------------show limit menu -->
+
+<!--display pagination--------------------------------------------------------------------------------pagination-->
+<div id="pgnation"><%- include('../partials/pgnation.ejs') %></div>
+<!--display limitMenu----------------------------------------------------------------------------------limitMenu-->
 <div id="Menu">
-  <%- include('../partials/dashboard/limitMenu.ejs') %> <%-
-  include('../partials/dashboard/sortMenu.ejs') %>
+  <%- include('../partials/limitMenu.ejs') %> <%-
+  include('../partials/sortMenu.ejs') %>
 </div>
-<!-- if there are stories -->
+
+<!-- if -->
+<!--user have story -->
 <% if(typeof stories == 'object' && stories.length > 0){%>
 <p>yes you do have stories</p>
 <div class="list-group">
   <!-- loop through each stories -->
-
-  <!-- sd -->
   <% stories.forEach(function(val){ %>
-  <!-- sd -->
-
+  <!--display posts---------------------------------------------------------------------------------------posts-->
   <a
     href="/stories/<%= val._id %>"
     class="list-group-item list-group-item-action flex-column align-items-start"
@@ -35,11 +35,12 @@
       <%= helpers.stripTags(helpers.truncate( val.body, 150)) %>
     </p>
   </a>
-
-  <!-- decrease story Number  -->
+  <!--display posts---------------------------------------------------------------------------------------posts-->
   <% }) %>
 </div>
-<!-- if no stories -->
-<% } else { %>
+
+<!-- else -->
+<!--then no story -->
+<%} else { %>
 <p>No stories to display</p>
 <% } %>

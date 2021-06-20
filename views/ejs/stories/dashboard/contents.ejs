@@ -1,0 +1,55 @@
+<!-- show posts-------------------------------------------------------------------------show posts -->
+
+
+<div class="row">
+  <div class="col-4">
+    <div class="list-group" id="list-tab" role="tablist">
+      <% stories.forEach(function(val){ %>
+       
+      <a
+        class="list-group-item list-group-item-action"
+        id="list-<%= val.title %>-list"
+        data-toggle="list"
+        href="#list-<%= val._id %>"
+        role="tab"
+        aria-controls="<%= val.title %>"
+      >
+        <div class="story_title">
+          <h5>
+            <%= val.title %>
+            <small class="story-status float-end"><%= val.status %></small>
+          </h5>
+          <p class="float-end"><P>Number:<%= val.storyNumber %></P>Views: <%= val.views %></p>
+          <small>[<%= helpers.formatDate(val.createdAt) %>] </small>
+        </div>
+      </a>
+     
+      <% }) %>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="tab-content" id="nav-tabContent">
+      <% stories.forEach(function(val){ %>
+
+      <div
+        class="tab-pane fade show"
+        id="list-<%= val._id %>"
+        role="tabpanel"
+        aria-labelledby="list-<%= val.title %>-list"
+      >
+        <a href="/stories/edit/<%= val._id %>" class="btn btn-float">
+          <i class="fas fa-edit"></i>
+        </a>
+        <form action="/stories/<%= val._id %>" method="POST" id="delete-form">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="btn red">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+        <p><%= helpers.stripTags(val.body) %></p>
+      </div>
+
+      <% }) %>
+    </div>
+  </div>
+</div>
