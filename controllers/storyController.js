@@ -267,20 +267,7 @@ const story_post_add = async (req, res) => {
     res.render("error/500");
   }
 };
-//************************************************************POST  Process add form  /stories/
-const story_post_comment = async (req, res) => {
-  //req.body.text = JSON.stringify(req.body);
-  req.body.post = req.params.id;
-  req.body.user = req.user.id;
 
-  try {
-    await Comment.create(req.body);
-    //res.redirect("/stories/singleStory");
-  } catch (err) {
-    console.error(err);
-    res.render("error/500");
-  }
-};
 //************************************************************PUT  Update story       /stories/:id
 const story_put_update = async (req, res) => {
   try {
@@ -352,7 +339,7 @@ module.exports = {
   story_get_showSingle,
   story_get_edit,
   story_get_dashboard,
-  story_post_comment,
+
   story_post_add,
   story_put_update,
   story_delete_story,

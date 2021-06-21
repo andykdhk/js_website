@@ -1,3 +1,6 @@
+<!-- singleStory.ejs -->
+
+<!-- contents ------------------------------------------------------------------------------------------------contents-->
 <div class="row">
   <div class="col s12 m8">
     <h3>
@@ -7,5 +10,18 @@
     <h3>Contents: <%= helpers.stripTags(stories.body) %></h3>
   </div>
 </div>
-<!--display comments---------------------------------------------------------------------------------------comments-->
-<%- include('../stories/comments/content.ejs') %>
+
+<div class="container mt-5 mb-5">
+  <div class="d-flex justify-content-center row">
+    <div class="d-flex flex-column col-md-8">
+      <!--display status-------------------------------------------------------------------------------------user status-->
+      <%- include('../stories/comments/status.ejs') %>
+      <!--display comment---------------------------------------------------------------------------------------comments-->
+      <div class="coment-bottom bg-white p-2 px-4">
+        <%- include('../stories/comments/content.ejs') %>
+        <!--display reply------------------------------------------------------------------------------------------reply-->
+        <%- include('../stories/comments/reply.ejs') %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -108,7 +108,7 @@ app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/auth", require("./routes/auth"));
 app.use("/stories", require("./routes/stories"));
-
+app.use("/comment", require("./routes/comment"));
 /* Variables */
 const PORT = process.env.PORT || 3000;
 

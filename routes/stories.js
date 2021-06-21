@@ -20,11 +20,7 @@ router.get("/edit/:id", ensureAuthenticated, storyController.story_get_edit);
 
 //POST
 router.post("/", ensureAuthenticated, storyController.story_post_add);
-router.post(
-  "/comment/:id",
-  ensureAuthenticated,
-  storyController.story_post_comment
-);
+
 //PUT
 router.put("/:id", ensureAuthenticated, storyController.story_put_update);
 

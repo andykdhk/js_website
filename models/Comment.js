@@ -7,6 +7,7 @@ const CommentSchema = new mongoose.Schema(
       ref: "Story",
       require: true,
     },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -14,10 +15,11 @@ const CommentSchema = new mongoose.Schema(
     },
 
     parentComment: {
-      // 1
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment",
+      require: true,
     },
+
     body: {
       type: String,
       required: true,
@@ -27,15 +29,18 @@ const CommentSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+
     isDeleted: {
       // 2
       type: Boolean,
       default: false,
     },
+
     createdAt: {
       type: Date,
       default: Date.now,
     },
+
     updatedAt: {
       type: Date,
     },
