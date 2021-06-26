@@ -172,7 +172,7 @@ const story_get_showSingle = async (req, res) => {
   try {
     let stories = await Story.findById(req.params.id).populate("user").lean();
     let comments = await Comment.find({ post: stories._id })
-      .populate("user")
+      .populate("user", "comments")
       .lean();
 
     if (!stories) {

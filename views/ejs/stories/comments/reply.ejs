@@ -33,7 +33,7 @@
       >Reply
     </a>
     <div class="collapse" id="reply-<%= val._id %>">
-      <%- include('content.ejs') %>
+      <%- include('content.ejs', { pt: val._id, depth:2 }); %>
     </div>
   </div>
 

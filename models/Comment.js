@@ -17,7 +17,6 @@ const CommentSchema = new mongoose.Schema(
     parentComment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment",
-      require: true,
     },
 
     body: {

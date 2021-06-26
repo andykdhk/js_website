@@ -10,7 +10,7 @@
     <h3>Contents: <%= helpers.stripTags(stories.body) %></h3>
   </div>
 </div>
-
+<% var parentCmt ="empty" %> <% var dpt =1 %>
 <div class="container mt-5 mb-5">
   <div class="d-flex justify-content-center row">
     <div class="d-flex flex-column col-md-8">
@@ -18,7 +18,7 @@
       <%- include('../stories/comments/status.ejs') %>
       <!--display comment---------------------------------------------------------------------------------------comments-->
       <div class="coment-bottom bg-white p-2 px-4">
-        <%- include('../stories/comments/content.ejs') %>
+        <%- include('comments/content.ejs',{pt: parentCmt, depth:dpt});%>
         <!--display reply------------------------------------------------------------------------------------------reply-->
         <%- include('../stories/comments/reply.ejs') %>
       </div>
