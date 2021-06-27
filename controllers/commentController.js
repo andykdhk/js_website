@@ -13,19 +13,18 @@ const helpers = require("../helpers/ejs");
 const post_comment = async (req, res) => {
   req.body.post = req.params.id;
   req.body.user = req.user.id;
-
-  res.redirect("/stories/" + req.params.id);
-  console.log(req.comments);
-  //   req.body.parentComment=
-  //   req.body.depth=
-
-  //   try {
-  //     await Comment.create(req.body);
-  //     res.redirect("/stories/" + req.params.id);
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.render("error/500");
-  //   }
+  /*case for first level comment */
+  if (req.body.parentComment == "") {
+    req.body.parentComment = null;
+  }
+  /*create new comment in db */
+  try {
+    await Comment.create(req.body);
+    res.redirect("/stories/" + req.params.id);
+  } catch (err) {
+    console.error(err);
+    res.render("error/500");
+  }
 };
 
 /* Export module*/

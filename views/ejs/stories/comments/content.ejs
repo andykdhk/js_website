@@ -6,5 +6,6 @@
     <textarea id="body" name="body"></textarea>
     <button type="submit" class="btn btn-primary">Comment</button>
   </div>
-  <%=pt%> <%=depth%>
+  <input type="hidden" name="parentComment" value="<%= pt %>" />
+  <input type="hidden" name="depth" value="<%= depth %>" />
 </form>

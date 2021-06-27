@@ -167,6 +167,33 @@ const story_get_dashboard = async (req, res) => {
   }
 };
 
+function toTree(arr) {
+  let arrMap = new Map(arr.map((item) => [item._id, item]));
+  let tree = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    let item = arr[i];
+
+    if (item.parentComment !== null) {
+      let parentItem = arrMap.get(item.parentComment);
+
+      if (parentItem) {
+        let { children } = parentItem;
+
+        if (children) {
+          parentItem.children.push(item);
+        } else {
+          parentItem.children = [item];
+        }
+      }
+    } else {
+      tree.push(item);
+    }
+  }
+
+  return tree;
+}
+
 //************************************************************GET  Show single story  /stories/:id
 const story_get_showSingle = async (req, res) => {
   try {
@@ -179,6 +206,8 @@ const story_get_showSingle = async (req, res) => {
       return res.render("error/404");
     }
 
+    let tree = toTree(comments);
+    console.log(tree);
     /* before login */
     if (!req.isAuthenticated()) {
       /*count views for guest */
@@ -193,7 +222,7 @@ const story_get_showSingle = async (req, res) => {
         user: req.user,
         helpers,
         stories,
-        comments,
+        comments: tree,
       });
       /* after login */
     } else if (req.isAuthenticated()) {
@@ -213,7 +242,7 @@ const story_get_showSingle = async (req, res) => {
           user: req.user,
           helpers,
           stories,
-          comments,
+          comments: tree,
         });
       }
       /* Error */
