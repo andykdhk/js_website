@@ -166,7 +166,28 @@ const story_get_dashboard = async (req, res) => {
     res.render("error/500");
   }
 };
+function list_to_tree(list) {
+  var map = {},
+    node,
+    roots = [],
+    i;
 
+  for (i = 0; i < list.length; i += 1) {
+    map[list[i]._id] = i; // initialize the map
+    list[i].childComments = []; // initialize the children
+  }
+
+  for (i = 0; i < list.length; i += 1) {
+    node = list[i];
+    if (node.parentComment !== null) {
+      // if you have dangling branches check that map[node.parentId] exists
+      list[map[node.parentComment]].childComments.push(node);
+    } else {
+      roots.push(node);
+    }
+  }
+  return roots;
+}
 function toTree(arr) {
   let arrMap = new Map(arr.map((item) => [item._id, item]));
   let tree = [];
@@ -206,8 +227,10 @@ const story_get_showSingle = async (req, res) => {
       return res.render("error/404");
     }
 
-    let tree = toTree(comments);
-    console.log(tree);
+    let tree1 = toTree(comments);
+    let tree = list_to_tree(comments);
+    //console.dir(tree, { depth: null });
+    // console.log(JSON.parse(JSON.stringify(tree2)));
     /* before login */
     if (!req.isAuthenticated()) {
       /*count views for guest */
