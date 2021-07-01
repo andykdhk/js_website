@@ -1,0 +1,8 @@
+<% if (typeof val.childComments === 'object' && val.childComments.length > 0){%>
+<% val.childComments.forEach(function(child) { %>
+<!-- line break -->
+<%- include('reply.ejs', {comments: child, virtual:"yes", cmtid:child._id, });%>
+<!-- line break -->
+<% }) } else{%>
+<p>no child Comments</p>
+<% } %> %>

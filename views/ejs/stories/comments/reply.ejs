@@ -2,103 +2,28 @@
 
 <!-- if -->
 <!-- user have comment -->
+
 <% if( typeof comments === 'object' && comments.length >0 ){%>
+
 <!-- show all comments---------------------------------------------------------------------------show comments -->
 <% comments.forEach(function(val){ %>
-<div class="commented-section mt-2">
-  <!-- info and content section -->
-  <div class="d-flex flex-row align-items-center commented-user">
-    <h5 class="mr-2"><%= val.user.firstName %></h5>
-    <span class="dot mb-1"></span
-    ><span class="mb-1 ml-2"><%=helpers.formatDate(val.createdAt) %></span>
-  </div>
-  <div class="comment-text-sm">
-    <span><%= helpers.stripTags(val.body) %></span>
-  </div>
-  <!-- like button and reply button section -->
-  <div>
-    <button class="like">
-      <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-    </button>
-    <button class="dislike">
-      <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-    </button>
-    <a
-      class="btn btn orange btn-primary"
-      data-toggle="collapse"
-      href="#reply-<%= val._id %>"
-      role="button"
-      aria-expanded="false"
-      aria-controls="coll"
-      >Reply
-    </a>
-    <div class="collapse" id="reply-<%= val._id %>">
-      <%- include('content.ejs', { pt: val._id, depth:2 }); %>
-    </div>
-  </div>
 
-  <!-- show replies section -->
-  <!-- <div class="reply-section">
-    <div class="d-flex flex-row align-items-center voting-icons">
-      <i class="fa fa-sort-up fa-2x mt-3 hit-voting"></i
-      ><i class="fa fa-sort-down fa-2x mb-3 hit-voting"></i
-      ><span class="ml-2">10</span><span class="dot ml-2"></span>
-      <h6 class="ml-2 mt-1">Reply</h6>
-    </div>
-  </div>
-</div> -->
-  <% if (typeof val.childComments === 'object' && val.childComments.length >
-  0){%> <% val.childComments.forEach(function(child) { %> <%-
-  include('reply.ejs', { comments: child, virtual:"yes", cmtid:child._id, }); %>
-  <% }) %> <% }else{%>
-  <p>no</p>
-  <% } }) %>
+<!-- line break -->
+<%- include('root', { val:val});%>
+<!-- line break -->
+<%- include('check', { val:val});%>
+<!-- line break -->
+<% })%>
+<!-- line break -->
 
-  <!-- else -->
-  <!-- then no story -->
-  <%}%> <%if (virtual ==="yes"){%>
+<%} else if (virtual ==="yes"){%>
 
-  <div class="commented-section mt-2">
-    <!-- info and content section -->
-    <div class="d-flex flex-row align-items-center commented-user">
-      <h5 class="mr-2"><%= comments.user.firstName %></h5>
-      <span class="dot mb-1"></span
-      ><span class="mb-1 ml-2"
-        ><%=helpers.formatDate(comments.createdAt) %></span
-      >
-    </div>
-    <div class="comment-text-sm">
-      <span><%= helpers.stripTags(comments.body) %></span>
-    </div>
-    <!-- like button and reply button section -->
-    <div>
-      <button class="like">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-      </button>
-      <button class="dislike">
-        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-      </button>
-      <a
-        class="btn btn orange btn-primary"
-        data-toggle="collapse"
-        href="#reply-<%= comments._id %>"
-        role="button"
-        aria-expanded="false"
-        aria-controls="coll"
-        >Reply
-      </a>
-      <div class="collapse" id="reply-<%=comments._id %>">
-        <%- include('content.ejs', { pt: comments._id, depth: ++comments.depth
-        }); %>
-      </div>
-    </div>
-    <% if (typeof comments.childComments === 'object' &&
-    comments.childComments.length > 0){%> <%
-    comments.childComments.forEach(function(child) { %> <%- include('reply.ejs',
-    { comments: child, virtual:"yes", cmtid:child._id, }); %> <% }) %> <% } }
-    else{ %>
+<!-- line break -->
+<%- include('child', { comments:comments});%>
+<!-- line break -->
+<%- include('check', { val:comments});%>
+<!-- line break -->
 
-    <p>you do not have any comments</p>
-    <% } %>
-  </div>
-</div>
+<% } else{ %>
+<p>you do not have any comments</p>
+<% } %>

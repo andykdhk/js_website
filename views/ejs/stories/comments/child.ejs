@@ -1,0 +1,31 @@
+<!-- info and content section -->
+<div class="d-flex flex-row align-items-center commented-user">
+  <h5 class="mr-2"><%= comments.user.firstName %></h5>
+  <span class="dot mb-1"></span
+  ><span class="mb-1 ml-2"><%=helpers.formatDate(comments.createdAt) %></span>
+</div>
+<div class="comment-text-sm">
+  <span><%= helpers.stripTags(comments.body) %></span>
+</div>
+<!-- like button and reply button section -->
+<div>
+  <button class="like">
+    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+  </button>
+  <button class="dislike">
+    <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+  </button>
+  <a
+    class="btn btn orange btn-primary"
+    data-toggle="collapse"
+    href="#reply-<%= comments._id %>"
+    role="button"
+    aria-expanded="false"
+    aria-controls="coll"
+    >Reply
+  </a>
+  <div class="collapse" id="reply-<%=comments._id %>">
+    <%- include('content.ejs', { pt: comments._id, depth: ++comments.depth });
+    %>
+  </div>
+</div>
